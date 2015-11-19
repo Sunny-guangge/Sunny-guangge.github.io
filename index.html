@@ -65,6 +65,67 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-block" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/11/19/block/" class="article-date">
+  <time datetime="2015-11-19T04:30:04.000Z" itemprop="datePublished">2015-11-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/11/19/block/">block</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>How Do I Declare A Block in Objective-C?</p>
+<p>As a local variable:</p>
+<p>returnType (^blockName)(parameterTypes) =  ^returnType(parameters) {…};<br>As a property:</p>
+<p>@property (nonatomic, copy) returnType (^blockName)(parameterTypes);<br>As a method parameter:</p>
+<ul>
+<li>(void)someMethodThatTakesABlock:(returnType(^)(parameterTypes))blockName;<br>As an argument to a method call:</li>
+</ul>
+<p>[someObject someMethodThatTakesABlock:^returnType (parameters) {…}];<br>As a typedef:</p>
+<p>typedef returnType (^TypeName)(parameterTypes);<br>TypeName blockName = ^returnType(parameters) {…};<br>This site is not intended to be an exhaustive list of all possible uses of blocks.<br>If you find yourself needing syntax not listed here, it is likely that a typedef would make your code more readable.</p>
+<p>Unable to access this site due to the profanity in the URL? (<a href="http://goshdarnblocksyntax.com" target="_blank" rel="external">http://goshdarnblocksyntax.com</a>) is a more work-friendly mirror.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="cih5qot960005vow5tz3metcq" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="post-block" data-title="undefined" data-url="http://sunny-guangge.github.io/2015/11/19/block/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"sunny-guangge"};
+(function() {
+var ds = document.createElement('script');
+ds.type = 'text/javascript';ds.async = true;
+ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+ds.charset = 'UTF-8';
+(document.getElementsByTagName('head')[0]
+|| document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+<!-- 多说公共JS代码 end -->
+  
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/11/17/hello-world/" class="article-date">
@@ -100,7 +161,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/17/hello-world/" data-id="cih2zhspi0004u4w5h5hxojos" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/17/hello-world/" data-id="cih5qot930004vow56scvkr1l" class="article-share-link">Share</a>
       
       
     </footer>
@@ -165,7 +226,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="cih2zhspf0003u4w5fk27ob93" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="cih5qot8w0003vow5l2u8vv83" class="article-share-link">Share</a>
       
       
     </footer>
@@ -298,7 +359,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/10/Markdown语法/" data-id="cih2zhsof0000u4w5asxuqbj5" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/10/Markdown语法/" data-id="cih5qot7w0000vow5d4xfkdxa" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Markdown/">Markdown</a></li></ul>
@@ -354,7 +415,7 @@ ds.charset = 'UTF-8';
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -364,6 +425,10 @@ ds.charset = 'UTF-8';
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/11/19/block/">block</a>
+          </li>
         
           <li>
             <a href="/2015/11/17/hello-world/">Hello World</a>

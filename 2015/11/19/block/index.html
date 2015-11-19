@@ -3,17 +3,27 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives | ㊣er八经de爱</title>
+  <title>block | ㊣er八经de爱</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="㊣er八经de爱">
-<meta property="og:url" content="http://sunny-guangge.github.io/archives/index.html">
+  <meta name="description" content="How Do I Declare A Block in Objective-C?
+As a local variable:
+returnType (^blockName)(parameterTypes) =  ^returnType(parameters) {…};As a property:
+@property (nonatomic, copy) returnType (^blockName)(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="block">
+<meta property="og:url" content="http://sunny-guangge.github.io/2015/11/19/block/index.html">
 <meta property="og:site_name" content="㊣er八经de爱">
-<meta property="og:description">
+<meta property="og:description" content="How Do I Declare A Block in Objective-C?
+As a local variable:
+returnType (^blockName)(parameterTypes) =  ^returnType(parameters) {…};As a property:
+@property (nonatomic, copy) returnType (^blockName)(">
+<meta property="og:updated_time" content="2015-11-19T04:40:34.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="㊣er八经de爱">
-<meta name="twitter:description">
+<meta name="twitter:title" content="block">
+<meta name="twitter:description" content="How Do I Declare A Block in Objective-C?
+As a local variable:
+returnType (^blockName)(parameterTypes) =  ^returnType(parameters) {…};As a property:
+@property (nonatomic, copy) returnType (^blockName)(">
   
     <link rel="alternative" href="/atom.xml" title="㊣er八经de爱" type="application/atom+xml">
   
@@ -63,97 +73,78 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/11/19/block/" class="archive-article-date">
-  <time datetime="2015-11-19T04:30:04.000Z" itemprop="datePublished">Nov 19</time>
+        <section id="main"><article id="post-block" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/11/19/block/" class="article-date">
+  <time datetime="2015-11-19T04:30:04.000Z" itemprop="datePublished">2015-11-19</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/11/19/block/">block</a>
+    <h1 class="article-title" itemprop="name">
+      block
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/11/17/hello-world/" class="archive-article-date">
-  <time datetime="2015-11-17T06:06:46.000Z" itemprop="datePublished">Nov 17</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/11/17/hello-world/">Hello World</a>
-    </h1>
-  
+        <p>How Do I Declare A Block in Objective-C?</p>
+<p>As a local variable:</p>
+<p>returnType (^blockName)(parameterTypes) =  ^returnType(parameters) {…};<br>As a property:</p>
+<p>@property (nonatomic, copy) returnType (^blockName)(parameterTypes);<br>As a method parameter:</p>
+<ul>
+<li>(void)someMethodThatTakesABlock:(returnType(^)(parameterTypes))blockName;<br>As an argument to a method call:</li>
+</ul>
+<p>[someObject someMethodThatTakesABlock:^returnType (parameters) {…}];<br>As a typedef:</p>
+<p>typedef returnType (^TypeName)(parameterTypes);<br>TypeName blockName = ^returnType(parameters) {…};<br>This site is not intended to be an exhaustive list of all possible uses of blocks.<br>If you find yourself needing syntax not listed here, it is likely that a typedef would make your code more readable.</p>
+<p>Unable to access this site due to the profanity in the URL? (<a href="http://goshdarnblocksyntax.com" target="_blank" rel="external">http://goshdarnblocksyntax.com</a>) is a more work-friendly mirror.</p>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/11/11/hexo创建个人博客总结/" class="archive-article-date">
-  <time datetime="2015-11-11T05:04:38.000Z" itemprop="datePublished">Nov 11</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/11/11/hexo创建个人博客总结/">hexo创建个人博客总结</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/11/10/Markdown语法/" class="archive-article-date">
-  <time datetime="2015-11-10T10:37:42.000Z" itemprop="datePublished">Nov 10</time>
-</a>
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="cih5qot960005vow5tz3metcq" class="article-share-link">Share</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/11/10/Markdown语法/">Markdown语法</a>
-    </h1>
-  
-
-    </header>
+      
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/11/17/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
-</section>
+
+<!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="post-block" data-title="block" data-url="http://sunny-guangge.github.io/2015/11/19/block/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"sunny-guangge"};
+(function() {
+var ds = document.createElement('script');
+ds.type = 'text/javascript';ds.async = true;
+ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+ds.charset = 'UTF-8';
+(document.getElementsByTagName('head')[0]
+|| document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+<!-- 多说公共JS代码 end --></section>
         
           <aside id="sidebar">
   
