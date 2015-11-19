@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Core Animation 总结 | sunny</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="CABasicAnimation CAKeyframeAnimation CATransition
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566//一次的滚动到某个位置CABasicAnimatio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Core Animation 总结">
+<meta property="og:url" content="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/index.html">
+<meta property="og:site_name" content="sunny">
+<meta property="og:description" content="CABasicAnimation CAKeyframeAnimation CATransition
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566//一次的滚动到某个位置CABasicAnimatio">
+<meta property="og:updated_time" content="2015-11-19T10:29:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Core Animation 总结">
+<meta name="twitter:description" content="CABasicAnimation CAKeyframeAnimation CATransition
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566//一次的滚动到某个位置CABasicAnimatio">
+  
+    <link rel="alternative" href="/atom.xml" title="sunny" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">sunny</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序猿的自我修养</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://sunny-guangge.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Core-Animation-总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/11/19/Core-Animation-总结/" class="article-date">
+  <time datetime="2015-11-19T08:06:35.000Z" itemprop="datePublished">2015-11-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Core Animation 总结
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>CABasicAnimation CAKeyframeAnimation CATransition</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">//一次的滚动到某个位置</span><br><span class="line">CABasicAnimation *animation = [CABasicAnimation animation];</span><br><span class="line">animation.keyPath = @<span class="string">"position.y"</span>;//位置的移动</span><br><span class="line">animation.keyPath = @<span class="string">"transform.rotation.x"</span>;//绕着x轴旋转，.y绕y轴旋转，rotation绕中点旋转</span><br><span class="line">animation.fromValue = @<span class="number">60</span>;</span><br><span class="line">animation.toValue = @<span class="number">500</span>;</span><br><span class="line">animation.duration = <span class="number">1</span>;</span><br><span class="line">animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];//滚动先加速再减速</span><br><span class="line">animation.timingFunction = [CAMediaTimingFunction functionWithControlPoints:<span class="number">1.0</span> :<span class="number">0.0</span> :<span class="number">1.0</span> :<span class="number">0.1</span>];//可以自定义速度</span><br><span class="line"></span><br><span class="line">[self.testView.layer addAnimation:animation forKey:@<span class="string">"basic"</span>];</span><br><span class="line"></span><br><span class="line">self.testView.layer.position = CGPointMake(<span class="number">25</span>, <span class="number">500</span>);</span><br><span class="line"></span><br><span class="line">//多长时间之后另一个滚动</span><br><span class="line">animation.beginTime = CACurrentMediaTime() + <span class="number">0.5</span>;</span><br><span class="line">[self.nwTestView.layer addAnimation:animation forKey:@<span class="string">"basic"</span>];</span><br><span class="line"></span><br><span class="line">self.nwTestView.layer.position = CGPointMake(<span class="number">125</span>, <span class="number">500</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//连续晃动多次</span><br><span class="line">//设置路径</span><br><span class="line"><span class="number">1</span>、可以添加到CAKeyframeAnimation的path中</span><br><span class="line">CGMutablePathRef path=CGPathCreateMutable();</span><br><span class="line">CGPathMoveToPoint(path, NULL, <span class="number">40</span>, <span class="number">420</span>);</span><br><span class="line">CGPathAddCurveToPoint(path, NULL, <span class="number">40</span>, <span class="number">40</span>, <span class="number">160</span>, <span class="number">40</span>, <span class="number">160</span>, <span class="number">420</span>);</span><br><span class="line">CGPathAddCurveToPoint(path, NULL, <span class="number">160</span>, <span class="number">40</span>, <span class="number">280</span>, <span class="number">40</span>, <span class="number">280</span>, <span class="number">420</span>);</span><br><span class="line"><span class="number">2</span>、连续左右晃动 有种震动的效果</span><br><span class="line">CAKeyframeAnimation *animation1 = [CAKeyframeAnimation animation];</span><br><span class="line">animation1.keyPath = @<span class="string">"position.x"</span>;</span><br><span class="line">animation1.values = @[ @<span class="number">0</span>, @<span class="number">20</span>, @-<span class="number">20</span>, @<span class="number">20</span>,@-<span class="number">20</span>, @<span class="number">20</span>, @<span class="number">0</span> ];</span><br><span class="line">animation1.keyTimes = @[ @<span class="number">0</span>, @(<span class="number">1</span> / <span class="number">6.0</span>), @(<span class="number">3</span> / <span class="number">6.0</span>), @(<span class="number">5</span> / <span class="number">6.0</span>),@(<span class="number">7</span> / <span class="number">6.0</span>),@(<span class="number">9</span> / <span class="number">6.0</span>), @<span class="number">1</span> ];</span><br><span class="line">animation1.duration = <span class="number">10.6</span>;</span><br><span class="line"></span><br><span class="line">animation1.additive = YES;</span><br><span class="line"></span><br><span class="line">[self.shakeView.layer addAnimation:animation1 forKey:@<span class="string">"shake"</span>];</span><br><span class="line"></span><br><span class="line">//按照一定的线路滚动</span><br><span class="line">CGRect boundingRect = CGRectMake(-<span class="number">150</span>, -<span class="number">150</span>, <span class="number">300</span>, <span class="number">300</span>);</span><br><span class="line"></span><br><span class="line">CAKeyframeAnimation *orbit = [CAKeyframeAnimation animation];</span><br><span class="line">orbit.keyPath = @<span class="string">"position"</span>;</span><br><span class="line">orbit.path = CFAutorelease(CGPathCreateWithEllipseInRect(boundingRect, NULL));//绕着一个圆不停的转动</span><br><span class="line">orbit.duration = <span class="number">4</span>;</span><br><span class="line">orbit.additive = YES;</span><br><span class="line">orbit.repeatCount = HUGE_VALF;</span><br><span class="line">orbit.calculationMode = kCAAnimationPaced;</span><br><span class="line">orbit.rotationMode = kCAAnimationRotateAuto;</span><br><span class="line"></span><br><span class="line">[self.nwTestView.layer addAnimation:orbit forKey:@<span class="string">"orbit"</span>];</span><br><span class="line"></span><br><span class="line">//立体的<span class="number">3</span>D转效果</span><br><span class="line">CATransition *animation11 = [CATransition animation];</span><br><span class="line">animation11.delegate = self;</span><br><span class="line">animation11.duration = <span class="number">2</span>;</span><br><span class="line">animation11.timingFunction = UIViewAnimationCurveEaseInOut;</span><br><span class="line">//animation.type = kCATransitionFade;</span><br><span class="line">animation11.type = @<span class="string">"cube"</span>;</span><br><span class="line">animation11.subtype = kCATransitionFromLeft;</span><br><span class="line">//<span class="number">2</span>个view交换</span><br><span class="line">NSUInteger green = [[self.view subviews] indexOfObject:self.nwTestView];</span><br><span class="line">NSUInteger blue = [[self.view subviews] indexOfObject:self.testView];</span><br><span class="line">[self.view exchangeSubviewAtIndex:green withSubviewAtIndex:blue];</span><br><span class="line">[self.shakeView.layer addAnimation:animation11 forKey:@<span class="string">"animation"</span>];</span><br></pre></td></tr></table></figure>
+<p>CALayer的子类 CAReplicatorLayer<br>1、 CAReplicatorLayer创建layer和它的sublayer的多个副本，副本可以设置transform来变形，或者设置颜色、透明度的变化<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">CAReplicatorLayer *layer = (CAReplicatorLayer *)self.view.layer;</span><br><span class="line">layer.instanceCount = <span class="number">2</span>;</span><br><span class="line">CATransform3D t = CATransform3DMakeTranslation(<span class="number">0</span>, self.view.frame.size.height + <span class="number">5</span>, <span class="number">0</span>);</span><br><span class="line">t = CATransform3DRotate(t, M_PI, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">t = CATransform3DScale(t, <span class="number">1</span>, <span class="number">0.8</span>, <span class="number">1</span>);</span><br><span class="line">layer.instanceTransform = t;</span><br><span class="line">layer.instanceAlphaOffset = -<span class="number">0.1</span>;</span><br><span class="line">layer.instanceRedOffset = -<span class="number">0.1</span>;</span><br><span class="line">layer.instanceGreenOffset = -<span class="number">0.1</span>;</span><br><span class="line">layer.instanceBlueOffset = -<span class="number">0.1</span>;</span><br></pre></td></tr></table></figure></p>
+<p>2、雪花的飘动，燃烧的火焰，烟雾效果，其实都是通过这个类的设置来实现的 CAEmitterLayer 和 CAEmitterCell<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">// Configure the particle emitter to the top edge of the screen</span><br><span class="line">CAEmitterLayer *snowEmitter = [CAEmitterLayer layer];</span><br><span class="line">snowEmitter.emitterPosition = CGPointMake(self.view.bounds.size.width / <span class="number">2.0</span>, -<span class="number">30</span>);//设置发射位置，这个和emitterMode有关</span><br><span class="line">snowEmitter.emitterZPosition=<span class="number">50</span>;//发射点z的位置，这个和emitterMode有关</span><br><span class="line">snowEmitter.emitterSize     = CGSizeMake(self.view.bounds.size.width * <span class="number">2.0</span>, <span class="number">0.0</span>);//发射点的范围，这个和emitterMode有关</span><br><span class="line">snowEmitter.emitterDepth=<span class="number">100</span>;</span><br><span class="line">//从线上发射</span><br><span class="line">//    snowEmitter.emitterMode        = kCAEmitterLayerOutline;</span><br><span class="line">//   snowEmitter.emitterShape    = kCAEmitterLayerLine;</span><br><span class="line">//从一个立方体内发射出，这样的话雪花会有不同的大小在<span class="number">3</span>D的情况下</span><br><span class="line">snowEmitter.emitterMode      = kCAEmitterLayerVolume;</span><br><span class="line">snowEmitter.emitterShape    = kCAEmitterLayerCuboid;</span><br><span class="line"></span><br><span class="line">//设置发射单元</span><br><span class="line">CAEmitterCell *snowflake = [CAEmitterCell emitterCell];</span><br><span class="line">snowflake.birthRate     = <span class="number">3.0</span>;//每秒发生<span class="number">1</span>个</span><br><span class="line">snowflake.lifetime      = <span class="number">60.0</span>;//生存时间为<span class="number">120</span>秒</span><br><span class="line">snowflake.velocity      = <span class="number">20</span>;               //初始速度</span><br><span class="line">snowflake.velocityRange = <span class="number">30</span>;//初始速度的随机范围</span><br><span class="line">snowflake.yAcceleration = <span class="number">50</span>;//y轴加速度，当然还有z,x轴</span><br><span class="line"></span><br><span class="line">//snowflake.emissionRange = -<span class="number">0.5</span> * M_PI;        // 发射角度范围 ,这个参数一设置，似乎方向只能朝屏幕内，就是z的负轴</span><br><span class="line"></span><br><span class="line">snowflake.spin=<span class="number">0.0</span>;</span><br><span class="line">snowflake.spinRange     =- <span class="number">0.25</span> * M_PI;     // 自旋转范围</span><br><span class="line"></span><br><span class="line">snowflake.contents      = (id) [[UIImage imageNamed:@<span class="string">"flake"</span>] CGImage];</span><br><span class="line">snowflake.color         = [[UIColor colorWithRed:<span class="number">0.600</span> green:<span class="number">0.658</span> blue:<span class="number">0.743</span> alpha:<span class="number">1.000</span>] CGColor];</span><br><span class="line"></span><br><span class="line">// Make the flakes seem inset <span class="keyword">in</span> the background</span><br><span class="line">snowEmitter.shadowOpacity = <span class="number">1.0</span>;</span><br><span class="line">snowEmitter.shadowRadius  = <span class="number">0.0</span>;</span><br><span class="line">snowEmitter.shadowOffset  = CGSizeMake(<span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line">snowEmitter.shadowColor   = [[UIColor whiteColor] CGColor];</span><br><span class="line"></span><br><span class="line">//snowflake.emissionLatitude=-M_PI_2;//按照Z轴旋转</span><br><span class="line">snowEmitter.preservesDepth=YES;</span><br><span class="line">CATransform3D transform = CATransform3DIdentity;</span><br><span class="line">transform.m34 = -<span class="number">1.0</span>/<span class="number">300.0</span>f;</span><br><span class="line">self.view.layer.transform=transform;</span><br><span class="line"></span><br><span class="line">// Add everything to our backing layer below the UIContol defined <span class="keyword">in</span> the storyboard</span><br><span class="line">snowEmitter.emitterCells = [NSArray arrayWithObject:snowflake];</span><br><span class="line">[self.view.layer insertSublayer:snowEmitter atIndex:<span class="number">0</span>];</span><br></pre></td></tr></table></figure></p>
+<p>3、 CAGradientLayer用来绘制渐变色，指定几个颜色值、渐变结束位置，就能在layer中绘制出渐变效果<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">//iamgeview设置渐变色</span><br><span class="line">UIImageView *iamgeView = [[UIImageView alloc] initWithFrame:self.view.frame];</span><br><span class="line">[self.view addSubview:iamgeView];</span><br><span class="line"></span><br><span class="line">CAGradientLayer *gradientlayer = [CAGradientLayer layer];</span><br><span class="line">CGRect frame = iamgeView.frame;</span><br><span class="line">frame.origin = CGPointMake(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">gradientlayer.frame = frame;</span><br><span class="line">gradientlayer.opacity = <span class="number">0.5</span>;</span><br><span class="line">gradientlayer.colors = @[(id)[UIColor redColor].CGColor,(id)[UIColor greenColor].CGColor,(id)[UIColor yellowColor].CGColor,(id)[UIColor blueColor].CGColor];</span><br><span class="line">gradientlayer.locations = @[@<span class="number">0.2</span>,@<span class="number">0.4</span>,@<span class="number">0.6</span>,@<span class="number">0.8</span>];</span><br><span class="line">gradientlayer.startPoint = CGPointMake(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">gradientlayer.endPoint = CGPointMake(<span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">[iamgeView.layer insertSublayer:gradientlayer above:iamgeView.layer];</span><br></pre></td></tr></table></figure></p>
+<p>4、更多的layer子类：CATransformLayer 、 CATiledLayer 、 CAScrollLayer<br>(<a href="http://www.15yan.com/story/gBdPD09UWFT/" target="_blank" rel="external">http://www.15yan.com/story/gBdPD09UWFT/</a>)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/" data-id="cih5yf7va0000s6w5219re5xq" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/11/19/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="post-Core-Animation-总结" data-title="Core Animation 总结" data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"sunny-guangge"};
+(function() {
+var ds = document.createElement('script');
+ds.type = 'text/javascript';ds.async = true;
+ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+ds.charset = 'UTF-8';
+(document.getElementsByTagName('head')[0]
+|| document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+<!-- 多说公共JS代码 end --></section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/">Markdown</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/11/19/Core-Animation-总结/">Core Animation 总结</a>
+          </li>
+        
+          <li>
+            <a href="/2015/11/19/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2015/11/19/block/">block</a>
+          </li>
+        
+          <li>
+            <a href="/2015/11/11/hexo创建个人博客总结/">hexo创建个人博客总结</a>
+          </li>
+        
+          <li>
+            <a href="/2015/11/10/Markdown语法/">Markdown语法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 sunny<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
