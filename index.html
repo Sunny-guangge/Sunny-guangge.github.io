@@ -120,10 +120,13 @@
 <h3 id="12、NSCoping_编码_数据存储到本地">12、NSCoping 编码 数据存储到本地</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#import &lt;Foundation/Foundation.h&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="decorator">@interface CKAccount : NSObject&lt;NSCoding&gt;</span></span><br><span class="line"></span><br><span class="line">/**　string	用于调用access_token，接口获取授权后的access token。*/</span><br><span class="line"><span class="decorator">@property (nonatomic, copy) NSString *access_token;</span></span><br><span class="line"></span><br><span class="line">/** 用户的头像链接*/</span><br><span class="line"><span class="decorator">@property (nonatomic,copy) NSString *avatar;</span></span><br><span class="line"></span><br><span class="line">/** 用户的名字*/</span><br><span class="line"><span class="decorator">@property (nonatomic,copy) NSString *name;</span></span><br><span class="line"></span><br><span class="line">/** 用户的Id*/</span><br><span class="line"><span class="decorator">@property (nonatomic,copy) NSString *Id;</span></span><br><span class="line"></span><br><span class="line">/** 用户的角色*/</span><br><span class="line"><span class="decorator">@property (nonatomic,copy) NSString *role; //0 游客用户   1 普通用户   2 专家用户</span></span><br><span class="line"></span><br><span class="line">+ (instancetype)accountWithDict:(NSDictionary *)dict;</span><br><span class="line"></span><br><span class="line"><span class="decorator">@end</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#import "CKAccount.h"</span></span><br><span class="line"></span><br><span class="line"><span class="decorator">@implementation CKAccount</span></span><br><span class="line"></span><br><span class="line">+ (instancetype)accountWithDict:(NSDictionary *)dict</span><br><span class="line">&#123;</span><br><span class="line">CKAccount *account = [[self alloc] init];</span><br><span class="line">account.access_token = dict[@<span class="string">"token"</span>];</span><br><span class="line">account.Id = dict[@<span class="string">"id"</span>];</span><br><span class="line">account.name = dict[@<span class="string">"name"</span>];</span><br><span class="line">account.avatar = dict[@<span class="string">"avatar"</span>];</span><br><span class="line">account.role = dict[@<span class="string">"role"</span>];</span><br><span class="line">account.radarArray = dict[@<span class="string">"radar"</span>];</span><br><span class="line"><span class="keyword">return</span> account;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">*  当一个对象要归档进沙盒中时，就会调用这个方法</span><br><span class="line">*  目的：在这个方法中说明这个对象的哪些属性要存进沙盒</span><br><span class="line">*/</span><br><span class="line">- (void)encodeWithCoder:(NSCoder *)encoder</span><br><span class="line">&#123;</span><br><span class="line">[encoder encodeObject:self.access_token forKey:@<span class="string">"token"</span>];</span><br><span class="line">[encoder encodeObject:self.Id forKey:@<span class="string">"id"</span>];</span><br><span class="line">[encoder encodeObject:self.name forKey:@<span class="string">"name"</span>];</span><br><span class="line">[encoder encodeObject:self.avatar forKey:@<span class="string">"avatar"</span>];</span><br><span class="line">[encoder encodeObject:self.role forKey:@<span class="string">"role"</span>];</span><br><span class="line">[encoder encodeObject:self.radarArray forKey:@<span class="string">"radar"</span>];</span><br><span class="line">//    [encoder encodeInteger:self.role forKey:@<span class="string">"role"</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">*  当从沙盒中解档一个对象时（从沙盒中加载一个对象时），就会调用这个方法</span><br><span class="line">*  目的：在这个方法中说明沙盒中的属性该怎么解析（需要取出哪些属性）</span><br><span class="line">*/</span><br><span class="line">- (id)initWithCoder:(NSCoder *)decoder</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span> (self = [super init]) &#123;</span><br><span class="line">self.access_token = [decoder decodeObjectForKey:@<span class="string">"token"</span>];</span><br><span class="line">self.Id = [decoder decodeObjectForKey:@<span class="string">"id"</span>];</span><br><span class="line">self.role = [decoder decodeObjectForKey:@<span class="string">"role"</span>];</span><br><span class="line">//        self.role = [decoder decodeIntegerForKey:@<span class="string">"role"</span>];</span><br><span class="line">self.name = [decoder decodeObjectForKey:@<span class="string">"name"</span>];</span><br><span class="line">self.avatar = [decoder decodeObjectForKey:@<span class="string">"avatar"</span>];</span><br><span class="line">self.radarArray = [decoder decodeObjectForKey:@<span class="string">"radar"</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">存储到本地：</span><br><span class="line">// 账号的存储路径</span><br><span class="line"><span class="comment">#define CKAccountPath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"account.archive"]</span></span><br><span class="line">存储account对象到本地（编码）</span><br><span class="line">[NSKeyedArchiver archiveRootObject:account toFile:CKAccountPath];</span><br><span class="line"></span><br><span class="line">从本地取出（反编码）</span><br><span class="line">CKAccount *account = [NSKeyedUnarchiver unarchiveObjectWithFile:CKAccountPath];</span><br></pre></td></tr></table></figure>
+<h3 id="13_点击cell的图片_图片从cell的位置开始全屏显示">13 点击cell的图片 图片从cell的位置开始全屏显示</h3><h1 id="关键在于_oldframe=[avatarImageView_convertRect:avatarImageView-bounds_toView:window];">关键在于 oldframe=[avatarImageView convertRect:avatarImageView.bounds toView:window];</h1><p>其他的就是UIView的动画来回显示</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">+(void)showImage:(UIImageView *)avatarImageView&#123;</span><br><span class="line">UIImage *image=avatarImageView.image;</span><br><span class="line">UIWindow *window=[UIApplication sharedApplication].keyWindow;</span><br><span class="line">UIView *backgroundView=[[UIView alloc]initWithFrame:CGRectMake(<span class="number">0</span>, <span class="number">0</span>, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];</span><br><span class="line">oldframe=[avatarImageView convertRect:avatarImageView.bounds toView:window];</span><br><span class="line">backgroundView.backgroundColor=[UIColor blackColor];</span><br><span class="line">backgroundView.alpha=<span class="number">0</span>;</span><br><span class="line">UIImageView *imageView=[[UIImageView alloc]initWithFrame:oldframe];</span><br><span class="line">imageView.image=image;</span><br><span class="line">imageView.tag=<span class="number">1</span>;</span><br><span class="line">[backgroundView addSubview:imageView];</span><br><span class="line">[window addSubview:backgroundView];</span><br><span class="line"></span><br><span class="line">UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideImage:)];</span><br><span class="line">[backgroundView addGestureRecognizer: tap];</span><br><span class="line"></span><br><span class="line">[UIView animateWithDuration:<span class="number">0.3</span> animations:^&#123;</span><br><span class="line">imageView.frame=CGRectMake(<span class="number">0</span>,([UIScreen mainScreen].bounds.size.height-image.size.height*[UIScreen mainScreen].bounds.size.width/image.size.width)/<span class="number">2</span>, [UIScreen mainScreen].bounds.size.width, image.size.height*[UIScreen mainScreen].bounds.size.width/image.size.width);</span><br><span class="line">backgroundView.alpha=<span class="number">1</span>;</span><br><span class="line">&#125; completion:^(BOOL finished) &#123;</span><br><span class="line"></span><br><span class="line">&#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+(void)hideImage:(UITapGestureRecognizer*)tap&#123;</span><br><span class="line">UIView *backgroundView=tap.view;</span><br><span class="line">UIImageView *imageView=(UIImageView*)[tap.view viewWithTag:<span class="number">1</span>];</span><br><span class="line">[UIView animateWithDuration:<span class="number">0.3</span> animations:^&#123;</span><br><span class="line">imageView.frame=oldframe;</span><br><span class="line">backgroundView.alpha=<span class="number">0</span>;</span><br><span class="line">&#125; completion:^(BOOL finished) &#123;</span><br><span class="line">[backgroundView removeFromSuperview];</span><br><span class="line">&#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cii9ys4cz0003q7w51z6n5s9q" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="ciijqkgpj0003d0w5877mz73f" class="article-share-link">Share</a>
       
       
     </footer>
@@ -182,7 +185,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="cii9ys4cx0002q7w5mqcu2ebi" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="ciijqkgpg0002d0w528dq6393" class="article-share-link">Share</a>
       
       
     </footer>
@@ -233,7 +236,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="cii9ys4cu0001q7w55nm4shf7" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="ciijqkgp90001d0w5ny5nct40" class="article-share-link">Share</a>
       
       
     </footer>
@@ -309,7 +312,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="cii9ys4d40006q7w5j1g7wsdu" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="ciijqkgpp0006d0w5zfk0mftm" class="article-share-link">Share</a>
       
       
     </footer>
@@ -369,7 +372,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="cii9ys4d60008q7w5ti5fkoc0" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="ciijqkgpr0008d0w5rahmisxk" class="article-share-link">Share</a>
       
       
     </footer>
@@ -429,7 +432,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/hello-world/" data-id="cii9ys4d20005q7w5p5djf7p3" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/hello-world/" data-id="ciijqkgpn0005d0w5rbrwc76i" class="article-share-link">Share</a>
       
       
     </footer>
@@ -486,7 +489,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/" data-id="cii9ys4c70000q7w5rcj1pt1q" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/" data-id="ciijqkgoq0000d0w5bfe9gct8" class="article-share-link">Share</a>
       
       
     </footer>
@@ -547,7 +550,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="cii9ys4d50007q7w5jj0dcj3l" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="ciijqkgpq0007d0w5hdu5rld7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -612,7 +615,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="cii9ys4d00004q7w59epx8aq4" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="ciijqkgpl0004d0w5ucoriygv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -745,7 +748,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/10/Markdown语法/" data-id="cii9ys4d80009q7w5bcoopd4p" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/10/Markdown语法/" data-id="ciijqkgpu0009d0w5pbdr4z18" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Markdown/">Markdown</a></li></ul>
