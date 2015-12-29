@@ -125,11 +125,14 @@
 <h3 id="关于键盘的出现、隐藏的一些属性">关于键盘的出现、隐藏的一些属性</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">UIKeyboardWillShowNotification;</span><br><span class="line">UIKeyboardDidShowNotification;</span><br><span class="line">UIKeyboardWillHideNotification;</span><br><span class="line">UIKeyboardDidHideNotification;</span><br><span class="line"></span><br><span class="line">UIKeyboardFrameBeginUserInfoKey        NS_AVAILABLE_IOS(<span class="number">3</span>_2); // NSValue of CGRect/</span><br><span class="line">UIKeyboardFrameEndUserInfoKey          NS_AVAILABLE_IOS(<span class="number">3</span>_2); // NSValue of CGRect//稳定之后的frame</span><br><span class="line">UIKeyboardAnimationDurationUserInfoKey NS_AVAILABLE_IOS(<span class="number">3</span>_0); // NSNumber of double  //动画时间</span><br><span class="line">UIKeyboardAnimationCurveUserInfoKey    NS_AVAILABLE_IOS(<span class="number">3</span>_0); // NSNumber of NSUInteger (UIViewAnimationCurve) //键盘的滚动样式</span><br><span class="line"></span><br><span class="line">// Like the standard keyboard notifications above, these additional notifications include</span><br><span class="line">// a nil object <span class="keyword">and</span> begin/end frames of the keyboard <span class="keyword">in</span> screen coordinates <span class="keyword">in</span> the userInfo dictionary.</span><br><span class="line">UIKIT_EXTERN NSString *const UIKeyboardWillChangeFrameNotification  NS_AVAILABLE_IOS(<span class="number">5</span>_0);</span><br><span class="line">UIKIT_EXTERN NSString *const UIKeyboardDidChangeFrameNotification   NS_AVAILABLE_IOS(<span class="number">5</span>_0);</span><br></pre></td></tr></table></figure>
 <p>NSNotification 的 userInfo 是一个字典 </p>
 <h3 id="找到当前的viewcontroller">找到当前的viewcontroller</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">- (UIViewController *)visibleViewController &#123;</span><br><span class="line">UIViewController *rootViewController = self.window.rootViewController;</span><br><span class="line">return [AppDelegate getVisibleViewControllerFrom:rootViewController];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (UIViewController *) getVisibleViewControllerFrom:(UIViewController *) vc</span><br><span class="line">&#123;</span><br><span class="line">NSLog(@"找我在的地方");</span><br><span class="line"></span><br><span class="line">if ([vc isKindOfClass:[UINavigationController class]])</span><br><span class="line">&#123;</span><br><span class="line">return [AppDelegate getVisibleViewControllerFrom:[((CKChatNavigationViewController *) vc) visibleViewController]];</span><br><span class="line">&#125;</span><br><span class="line">else if ([vc isKindOfClass:[UITabBarController class]])</span><br><span class="line">&#123;</span><br><span class="line">return [AppDelegate getVisibleViewControllerFrom:[((UITabBarController *) vc) selectedViewController]];</span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">if (vc.presentedViewController)</span><br><span class="line">&#123;</span><br><span class="line">return [AppDelegate getVisibleViewControllerFrom:vc.presentedViewController];</span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">return vc;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="适配iOS9">适配iOS9</h3><p>https<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;key&gt;NSAppTransportSecurity&lt;/key&gt;</span><br><span class="line">&lt;dict&gt;</span><br><span class="line">&lt;key&gt;NSAllowsArbitraryLoads&lt;/key&gt;</span><br><span class="line">&lt;true/&gt;</span><br><span class="line">&lt;/dict&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="添加3D_Touch">添加3D Touch</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;key&gt;UIApplicationShortcutItems&lt;/key&gt;</span><br><span class="line">&lt;array&gt;</span><br><span class="line">&lt;dict&gt;</span><br><span class="line">&lt;key&gt;UIApplicationShortcutItemTitle&lt;/key&gt;</span><br><span class="line">&lt;string&gt;摇一摇&lt;/string&gt;</span><br><span class="line">&lt;key&gt;UIApplicationShortcutItemType&lt;/key&gt;</span><br><span class="line">&lt;string&gt;com.chuangke.xmppChat1&lt;/string&gt;</span><br><span class="line">&lt;/dict&gt;</span><br><span class="line">&lt;dict&gt;</span><br><span class="line">&lt;key&gt;UIApplicationShortcutItemTitle&lt;/key&gt;</span><br><span class="line">&lt;string&gt;付款&lt;/string&gt;</span><br><span class="line">&lt;key&gt;UIApplicationShortcutItemType&lt;/key&gt;</span><br><span class="line">&lt;string&gt;com.chuangke.xmppChat2&lt;/string&gt;</span><br><span class="line">&lt;/dict&gt;</span><br><span class="line">&lt;dict&gt;</span><br><span class="line">&lt;key&gt;UIApplicationShortcutItemTitle&lt;/key&gt;</span><br><span class="line">&lt;string&gt;扫一扫&lt;/string&gt;</span><br><span class="line">&lt;key&gt;UIApplicationShortcutItemType&lt;/key&gt;</span><br><span class="line">&lt;string&gt;com.chuangke.xmppChat3&lt;/string&gt;</span><br><span class="line">&lt;/dict&gt;</span><br><span class="line">&lt;dict&gt;</span><br><span class="line">&lt;key&gt;UIApplicationShortcutItemTitle&lt;/key&gt;</span><br><span class="line">&lt;string&gt;我的二维码&lt;/string&gt;</span><br><span class="line">&lt;key&gt;UIApplicationShortcutItemType&lt;/key&gt;</span><br><span class="line">&lt;string&gt;com.chuangke.xmppChat4&lt;/string&gt;</span><br><span class="line">&lt;/dict&gt;</span><br><span class="line">&lt;/array&gt;</span><br></pre></td></tr></table></figure>
+<p>在下面这个方法里负责跳转：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void(^)(BOOL succeeded))completionHandler&#123;</span><br><span class="line">//判断先前我们设置的唯一标识</span><br><span class="line"><span class="keyword">if</span>([shortcutItem.type isEqualToString:@<span class="string">"com.chuangke.xmppChat1"</span>])&#123;</span><br><span class="line">//摇一摇</span><br><span class="line">        CKShakeViewController *shakeVC = [[CKShakeViewController alloc] init];</span><br><span class="line"></span><br><span class="line">        UIViewController *vc = [self visibleViewController];</span><br><span class="line"></span><br><span class="line">        [vc.navigationController pushViewController:shakeVC animated:YES];</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="ciiqvebjr0003exw5xncneev1" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="ciir3w6fd00034xw5xfd9a1z7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -188,7 +191,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="ciiqvebjp0002exw5yhcamhco" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="ciir3w6fa00024xw5fmxmpuxc" class="article-share-link">Share</a>
       
       
     </footer>
@@ -239,7 +242,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="ciiqvebji0001exw5v83a5w6t" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="ciir3w6f400014xw5gt0tyync" class="article-share-link">Share</a>
       
       
     </footer>
@@ -315,7 +318,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="ciiqvebjx0006exw527lgh1fi" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="ciir3w6fi00064xw5satbyfmt" class="article-share-link">Share</a>
       
       
     </footer>
@@ -375,7 +378,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="ciiqvebk00008exw5ipoc8e6k" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="ciir3w6fk00084xw5cblharwf" class="article-share-link">Share</a>
       
       
     </footer>
@@ -435,7 +438,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/hello-world/" data-id="ciiqvebjv0005exw53lhwh7oz" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/hello-world/" data-id="ciir3w6fg00054xw5b9z4xmqs" class="article-share-link">Share</a>
       
       
     </footer>
@@ -492,7 +495,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/" data-id="ciiqvebiy0000exw5ekae2vd2" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/" data-id="ciir3w6en00004xw5sf069l9s" class="article-share-link">Share</a>
       
       
     </footer>
@@ -553,7 +556,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="ciiqvebjy0007exw5u7fghctl" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="ciir3w6fj00074xw5uze4mn7g" class="article-share-link">Share</a>
       
       
     </footer>
@@ -618,7 +621,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="ciiqvebju0004exw5h3ap2gkl" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="ciir3w6ff00044xw5z7mwa9wr" class="article-share-link">Share</a>
       
       
     </footer>
@@ -751,7 +754,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/10/Markdown语法/" data-id="ciiqvebk20009exw5wxtn48w1" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/10/Markdown语法/" data-id="ciir3w6fo00094xw5hs157kyf" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Markdown/">Markdown</a></li></ul>
