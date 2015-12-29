@@ -65,6 +65,76 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-3DTouch" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/12/29/3DTouch/" class="article-date">
+  <time datetime="2015-12-29T09:28:44.000Z" itemprop="datePublished">2015-12-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/29/3DTouch/">3DTouch</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##3Dtouch 的实际应用详解</p>
+<p>3D touch也出了很长时间了，这次花时间好好研究了一下，把经验与大家分享一下</p>
+<h3 id="1-_主界面重按APP图标，弹出Touch菜单">1. 主界面重按APP图标，弹出Touch菜单</h3><p>1.1静态快速选项</p>
+<p>(iOS数组)给APP指定静态主屏幕的快速选项，这个键包含了一个字典数组，每个字典包含关于一个快速选项的详细信息。 你可以指定静态快速选项给你的APP用一个字典数组。</p>
+<p>UIApplicationShortcutItems (iOS数组)给APP指定静态主屏幕的快速选项，这个键包含了一个字典数组，每个字典包含关于一个快速选项的详细信息。 你可以指定静态快速选项给你的APP用一个字典数组。</p>
+<p>静态定义快速在运行时常用的key:</p>
+<p>UIApplicationShortcutItemType (必须使用) 用来区分与其他快速选项的分类</p>
+<p>UIApplicationShortcutItemTitle (必须使用) 快速选项显示的标题</p>
+<p>UIApplicationShortcutItemSubtitle 快速选项显示的子标题</p>
+<p>UIApplicationShortcutItemIconType 图片类型由系统提供（ iOS9.1之后新添加了许多图片类型）<br>UIApplicationShortcutItemIconFile 自定义的图标</p>
+<p>UIApplicationShortcutItemUserInfo 附加信息</p>
+<h3 id="2-_动态快速选项">2. 动态快速选项</h3><p>在AppDelegate中实现以下代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;</span><br><span class="line">    UIApplicationShortcutItem * item = [[UIApplicationShortcutItem alloc]initWithType:@<span class="string">"two"</span> localizedTitle:@<span class="string">"搜索楼盘"</span> localizedSubtitle:@<span class="string">"一步到达指定楼盘"</span> icon:[UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypeSearch] userInfo:nil];</span><br><span class="line">    UIApplicationShortcutItem * item1 = [[UIApplicationShortcutItem alloc]initWithType:@<span class="string">"three"</span> localizedTitle:@<span class="string">"附近楼盘"</span> localizedSubtitle:@<span class="string">"快来领路费吧"</span> icon:[UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypeMarkLocation] userInfo:nil];</span><br><span class="line">    [UIApplication sharedApplication].shortcutItems = @[item,item1];</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-选择item后触发的方法">3.选择item后触发的方法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">- (void)application:(UIApplication *)application performActionForShortcutItem:(nonnull UIApplicationShortcutItem *)shortcutItem completionHandler:(nonnull void (^)(BOOL))completionHandler&#123;</span><br><span class="line">　　//通过shortcutItem.type来判断点击的是哪一个item，来进行不同的操作</span><br><span class="line">    <span class="keyword">if</span> ([shortcutItem.type isEqualToString:@<span class="string">"one"</span>]) &#123;</span><br><span class="line">         UITabBarController *mytab = (UITabBarController*)self.window.rootViewController;</span><br><span class="line">        mytab.selectedIndex = <span class="number">0</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> ([shortcutItem.type isEqualToString:@<span class="string">"two"</span>])&#123;</span><br><span class="line">        SearchVC *searchVC = [[SearchVC alloc]init];</span><br><span class="line">        UITabBarController *mytab = (UITabBarController*)self.window.rootViewController;</span><br><span class="line">        UINavigationController *myNAV = [mytab.viewControllers firstObject];</span><br><span class="line">        [myNAV pushViewController:searchVC animated:YES];</span><br><span class="line">      //  [self.window.rootViewController presentViewController:searchVC animated:YES completion:nil];</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        FPHNearbyVC *vc = [[FPHNearbyVC alloc] init];</span><br><span class="line">        UITabBarController *mytab = (UITabBarController*)self.window.rootViewController;</span><br><span class="line">        UINavigationController *myNAV = [mytab.viewControllers firstObject];</span><br><span class="line">        vc.hidesBottomBarWhenPushed = YES;</span><br><span class="line">        [myNAV pushViewController:vc animated:YES];</span><br><span class="line">    &#125;</span><br><span class="line">    completionHandler(YES);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-APP内部peek和pop的使用（以tableView中的使用为例）">4.APP内部peek和pop的使用（以tableView中的使用为例）</h3><p>首先遵守协议UIViewControllerPreviewingDelegate</p>
+<h3 id="4-1_检测是否有3Dtouch；">4.1 检测是否有3Dtouch；</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (void)check3DTouch&#123;</span><br><span class="line">    <span class="keyword">if</span> (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable)</span><br><span class="line">    &#123;</span><br><span class="line">        NSLog(@<span class="string">"3D Touch 开启"</span>);</span><br><span class="line">        </span><br><span class="line">       &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">            </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-2_下面来实现相应的代理方法">4.2 下面来实现相应的代理方法</h3><p>//peek的代理方法，轻按即可触发弹出vc<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> - (UIViewController *)previewingContext:(id &lt;UIViewControllerPreviewing&gt;)previewingContext viewControllerForLocation:(CGPoint)location&#123;</span><br><span class="line">      NSIndexPath *indexPath = [_tableView indexPathForCell:(UITableViewCell* )[previewingContext sourceView]];</span><br><span class="line">　　　　//通过[previewingContext sourceView]拿到对应的cell；　　</span><br><span class="line">     NewVC *vc = [[FPHNewHouseDetailVC alloc] init];</span><br><span class="line">     newModel *model= [_tableView objectAtIndex:indexPath.row];</span><br><span class="line">     vc.pid = house.id;</span><br><span class="line">   </span><br><span class="line">     NSLog(@<span class="string">"%@"</span>,location);</span><br><span class="line">     <span class="keyword">return</span> vc;</span><br><span class="line"> &#125;</span><br><span class="line">//pop的代理方法，在此处可对将要进入的vc进行处理，比如隐藏tabBar；</span><br><span class="line"> - (void)previewingContext:(id &lt;UIViewControllerPreviewing&gt;)previewingContext commitViewController:(UIViewController *)viewControllerToCommit</span><br><span class="line"> &#123;</span><br><span class="line">     viewControllerToCommit.hidesBottomBarWhenPushed = YES;</span><br><span class="line">     [self showViewController:viewControllerToCommit sender:self];</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">注意 ： tableView在</span><br><span class="line"></span><br><span class="line">- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath</span><br><span class="line"></span><br><span class="line">方法中一定要对每个cell进行注册代理方法如下</span><br><span class="line"></span><br><span class="line">[self registerForPreviewingWithDelegate:self sourceView:cell];</span><br></pre></td></tr></table></figure>
+<h3 id="5-预览时底部菜单的添加">5.预览时底部菜单的添加</h3><p>在要预览的VC中添加以下代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">-(NSArray&lt;id&lt;UIPreviewActionItem&gt;&gt; *)previewActionItems</span><br><span class="line">&#123;</span><br><span class="line">    UIPreviewAction * action1 = [UIPreviewAction actionWithTitle:@<span class="string">"标题1"</span> style:<span class="number">1</span> handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) &#123;</span><br><span class="line">        NSLog(@<span class="string">"标题1"</span>);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    UIPreviewAction * action2 = [UIPreviewAction actionWithTitle:@<span class="string">"标题2"</span> style:<span class="number">0</span> handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) &#123;</span><br><span class="line">      NSLog(@<span class="string">"标题2"</span>);</span><br><span class="line">        </span><br><span class="line">    &#125;];</span><br><span class="line">    UIPreviewAction * action3 = [UIPreviewAction actionWithTitle:@<span class="string">"标题3"</span> style:<span class="number">2</span> handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) &#123;</span><br><span class="line">        NSLog(@<span class="string">"标题3"</span>);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    NSArray * actions = @[action1,action2,action3];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> actions;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>block里面直接写点击后要实现的操作</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sunny-guangge.github.io/2015/12/29/3DTouch/" data-id="ciir6yymb000050w5b22czxe3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="post-3DTouch" data-title="undefined" data-url="http://sunny-guangge.github.io/2015/12/29/3DTouch/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"sunny-guangge"};
+(function() {
+var ds = document.createElement('script');
+ds.type = 'text/javascript';ds.async = true;
+ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+ds.charset = 'UTF-8';
+(document.getElementsByTagName('head')[0]
+|| document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+<!-- 多说公共JS代码 end -->
+  
     <article id="post-学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/12/17/学习笔记/" class="article-date">
@@ -135,7 +205,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="ciir6ne3h0003ogw5704amj51" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="ciir6yynh000350w5zobyy0t7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -194,7 +264,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="ciir6ne3e0002ogw5nsdfmk70" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="ciir6yyne000250w5uzxjyha6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -245,7 +315,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="ciir6ne370001ogw5a0960mwz" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="ciir6yyn6000150w5rovjlfje" class="article-share-link">Share</a>
       
       
     </footer>
@@ -321,7 +391,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="ciir6ne3l0006ogw59lk3igik" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="ciir6yyno000650w58h92gp2q" class="article-share-link">Share</a>
       
       
     </footer>
@@ -381,7 +451,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="ciir6ne3o0008ogw5qnm22ngi" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="ciir6yynr000850w5qfasjvoe" class="article-share-link">Share</a>
       
       
     </footer>
@@ -441,7 +511,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/hello-world/" data-id="ciir6ne3k0005ogw56ksshu9r" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/hello-world/" data-id="ciir6yynm000550w5y6nx6e3q" class="article-share-link">Share</a>
       
       
     </footer>
@@ -498,7 +568,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/" data-id="ciir6ne2d0000ogw59c8qu3zi" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/" data-id="ciir6yyo1000c50w5zn9lvs6f" class="article-share-link">Share</a>
       
       
     </footer>
@@ -559,7 +629,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="ciir6ne3n0007ogw5smk99c86" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="ciir6yynq000750w57q4zcwoo" class="article-share-link">Share</a>
       
       
     </footer>
@@ -624,7 +694,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="ciir6ne3i0004ogw5hgqhxmly" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="ciir6yynl000450w5usabl11g" class="article-share-link">Share</a>
       
       
     </footer>
@@ -649,141 +719,10 @@ ds.charset = 'UTF-8';
 </script>
 <!-- 多说公共JS代码 end -->
   
-    <article id="post-Markdown语法" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/11/10/Markdown语法/" class="article-date">
-  <time datetime="2015-11-10T10:37:42.000Z" itemprop="datePublished">2015-11-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/10/Markdown语法/">Markdown语法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我们理解您需要更便捷更高效的工具记录思想，整理笔记、知识，并将其中承载的价值传播给他人，<strong>Cmd Markdown</strong> 是我们给出的答案 —— 我们为记录思想和分享知识提供更专业的工具。 您可以使用 Cmd Markdown：</p>
-<blockquote>
-<ul>
-<li>整理知识，学习笔记</li>
-<li>发布日记，杂文，所见所想</li>
-<li>撰写发布技术文稿（代码支持）</li>
-<li>撰写发布学术论文（LaTeX 公式支持）</li>
-</ul>
-</blockquote>
-<p><img src="https://www.zybuluo.com/static/img/logo.png" alt="cmd-markdown-logo"></p>
-<p>除了您现在看到的这个 Cmd Markdown 在线版本，您还可以前往以下网址下载：</p>
-<h3 id="Windows/Mac/Linux_全平台客户端"><a href="https://www.zybuluo.com/cmd/" target="_blank" rel="external">Windows/Mac/Linux 全平台客户端</a></h3><blockquote>
-<p>请保留此份 Cmd Markdown 的欢迎稿兼使用说明，如需撰写新稿件，点击顶部工具栏右侧的 <i class="icon-file"></i> <strong>新文稿</strong> 或者使用快捷键 <code>Ctrl+Alt+N</code>。</p>
-</blockquote>
-<hr>
-<h2 id="什么是_Markdown">什么是 Markdown</h2><p>Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以使用这些标记符号以最小的输入代价生成极富表现力的文档：譬如您正在阅读的这份文档。它使用简单的符号标记不同的标题，分割不同的段落，<strong>粗体</strong> 或者 <em>斜体</em> 某些文字，更棒的是，它还可以</p>
-<h3 id="1-_制作一份待办事宜_Todo_列表">1. 制作一份待办事宜 <a href="https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown#13-待办事宜-todo-列表" target="_blank" rel="external">Todo 列表</a></h3><ul>
-<li>[ ] 支持以 PDF 格式导出文稿</li>
-<li>[ ] 改进 Cmd 渲染算法，使用局部渲染技术提高渲染效率</li>
-<li>[x] 新增 Todo 列表功能</li>
-<li>[x] 修复 LaTex 公式渲染问题</li>
-<li>[x] 新增 LaTex 公式编号功能</li>
-</ul>
-<h3 id="2-_书写一个质能守恒公式[^LaTeX]">2. 书写一个质能守恒公式[^LaTeX]</h3><p>$$E=mc^2$$</p>
-<h3 id="3-_高亮一段代码[^code]">3. 高亮一段代码[^code]</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="decorator">@requires_authorization</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SomeClass</span>:</span></span><br><span class="line"><span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"><span class="comment"># A comment</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">'hello world'</span></span><br></pre></td></tr></table></figure>
-<h3 id="4-_高效绘制_流程图">4. 高效绘制 <a href="https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown#7-流程图" target="_blank" rel="external">流程图</a></h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">st=&#62;start: Start&#10;op=&#62;operation: Your Operation&#10;cond=&#62;condition: Yes or No?&#10;e=&#62;end&#10;&#10;st-&#62;op-&#62;cond&#10;cond(yes)-&#62;e&#10;cond(no)-&#62;op</span><br></pre></td></tr></table></figure>
-<h3 id="5-_高效绘制_序列图">5. 高效绘制 <a href="https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown#8-序列图" target="_blank" rel="external">序列图</a></h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Alice-&#62;Bob: Hello Bob, how are you?&#10;Note right of Bob: Bob thinks&#10;Bob--&#62;Alice: I am good thanks!</span><br></pre></td></tr></table></figure>
-<h3 id="6-_绘制表格">6. 绘制表格</h3><table>
-<thead>
-<tr>
-<th>项目</th>
-<th style="text-align:right">价格</th>
-<th style="text-align:center">数量</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>计算机</td>
-<td style="text-align:right">\$1600</td>
-<td style="text-align:center">5</td>
-</tr>
-<tr>
-<td>手机</td>
-<td style="text-align:right">\$12</td>
-<td style="text-align:center">12</td>
-</tr>
-<tr>
-<td>管线</td>
-<td style="text-align:right">\$1</td>
-<td style="text-align:center">234</td>
-</tr>
-</tbody>
-</table>
-<h3 id="7-_更详细语法说明">7. 更详细语法说明</h3><p>想要查看更详细的语法说明，可以参考我们准备的 <a href="https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown" target="_blank" rel="external">Cmd Markdown 简明语法手册</a>，进阶用户可以参考 <a href="https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown#cmd-markdown-高阶语法手册" target="_blank" rel="external">Cmd Markdown 高阶语法手册</a> 了解更多高级功能。</p>
-<p>总而言之，不同于其它 <em>所见即所得</em> 的编辑器：你只需使用键盘专注于书写文本内容，就可以生成印刷级的排版格式，省却在键盘和工具栏之间来回切换，调整内容和格式的麻烦。<strong>Markdown 在流畅的书写和印刷级的阅读体验之间找到了平衡。</strong> 目前它已经成为世界上最大的技术分享网站 GitHub 和 技术问答网站 StackOverFlow 的御用书写格式。</p>
-<hr>
-<h2 id="什么是_Cmd_Markdown">什么是 Cmd Markdown</h2><p>您可以使用很多工具书写 Markdown，但是 Cmd Markdown 是这个星球上我们已知的、最好的 Markdown 工具——没有之一 ：）因为深信文字的力量，所以我们和你一样，对流畅书写，分享思想和知识，以及阅读体验有极致的追求，我们把对于这些诉求的回应整合在 Cmd Markdown，并且一次，两次，三次，乃至无数次地提升这个工具的体验，最终将它演化成一个 <strong>编辑/发布/阅读</strong> Markdown 的在线平台——您可以在任何地方，任何系统/设备上管理这里的文字。</p>
-<h3 id="1-_实时同步预览">1. 实时同步预览</h3><p>我们将 Cmd Markdown 的主界面一分为二，左边为<strong>编辑区</strong>，右边为<strong>预览区</strong>，在编辑区的操作会实时地渲染到预览区方便查看最终的版面效果，并且如果你在其中一个区拖动滚动条，我们有一个巧妙的算法把另一个区的滚动条同步到等价的位置，超酷！</p>
-<h3 id="2-_编辑工具栏">2. 编辑工具栏</h3><p>也许您还是一个 Markdown 语法的新手，在您完全熟悉它之前，我们在 <strong>编辑区</strong> 的顶部放置了一个如下图所示的工具栏，您可以使用鼠标在工具栏上调整格式，不过我们仍旧鼓励你使用键盘标记格式，提高书写的流畅度。</p>
-<p><img src="https://www.zybuluo.com/static/img/toolbar-editor.png" alt="tool-editor"></p>
-<h3 id="3-_编辑模式">3. 编辑模式</h3><p>完全心无旁骛的方式编辑文字：点击 <strong>编辑工具栏</strong> 最右测的拉伸按钮或者按下 <code>Ctrl + M</code>，将 Cmd Markdown 切换到独立的编辑模式，这是一个极度简洁的写作环境，所有可能会引起分心的元素都已经被挪除，超清爽！</p>
-<h3 id="4-_实时的云端文稿">4. 实时的云端文稿</h3><p>为了保障数据安全，Cmd Markdown 会将您每一次击键的内容保存至云端，同时在 <strong>编辑工具栏</strong> 的最右侧提示 <code>已保存</code> 的字样。无需担心浏览器崩溃，机器掉电或者地震，海啸——在编辑的过程中随时关闭浏览器或者机器，下一次回到 Cmd Markdown 的时候继续写作。</p>
-<h3 id="5-_离线模式">5. 离线模式</h3><p>在网络环境不稳定的情况下记录文字一样很安全！在您写作的时候，如果电脑突然失去网络连接，Cmd Markdown 会智能切换至离线模式，将您后续键入的文字保存在本地，直到网络恢复再将他们传送至云端，即使在网络恢复前关闭浏览器或者电脑，一样没有问题，等到下次开启 Cmd Markdown 的时候，她会提醒您将离线保存的文字传送至云端。简而言之，我们尽最大的努力保障您文字的安全。</p>
-<h3 id="6-_管理工具栏">6. 管理工具栏</h3><p>为了便于管理您的文稿，在 <strong>预览区</strong> 的顶部放置了如下所示的 <strong>管理工具栏</strong>：</p>
-<p><img src="https://www.zybuluo.com/static/img/toolbar-manager.jpg" alt="tool-manager"></p>
-<p>通过管理工具栏可以：</p>
-<p><i class="icon-share"></i> 发布：将当前的文稿生成固定链接，在网络上发布，分享<br><i class="icon-file"></i> 新建：开始撰写一篇新的文稿<br><i class="icon-trash"></i> 删除：删除当前的文稿<br><i class="icon-cloud"></i> 导出：将当前的文稿转化为 Markdown 文本或者 Html 格式，并导出到本地<br><i class="icon-reorder"></i> 列表：所有新增和过往的文稿都可以在这里查看、操作<br><i class="icon-pencil"></i> 模式：切换 普通/Vim/Emacs 编辑模式</p>
-<h3 id="7-_阅读工具栏">7. 阅读工具栏</h3><p><img src="https://www.zybuluo.com/static/img/toolbar-reader.jpg" alt="tool-manager"></p>
-<p>通过 <strong>预览区</strong> 右上角的 <strong>阅读工具栏</strong>，可以查看当前文稿的目录并增强阅读体验。</p>
-<p>工具栏上的五个图标依次为：</p>
-<p><i class="icon-list"></i> 目录：快速导航当前文稿的目录结构以跳转到感兴趣的段落<br><i class="icon-chevron-sign-left"></i> 视图：互换左边编辑区和右边预览区的位置<br><i class="icon-adjust"></i> 主题：内置了黑白两种模式的主题，试试 <strong>黑色主题</strong>，超炫！<br><i class="icon-desktop"></i> 阅读：心无旁骛的阅读模式提供超一流的阅读体验<br><i class="icon-fullscreen"></i> 全屏：简洁，简洁，再简洁，一个完全沉浸式的写作和阅读环境</p>
-<h3 id="8-_阅读模式">8. 阅读模式</h3><p>在 <strong>阅读工具栏</strong> 点击 <i class="icon-desktop"></i> 或者按下 <code>Ctrl+Alt+M</code> 随即进入独立的阅读模式界面，我们在版面渲染上的每一个细节：字体，字号，行间距，前背景色都倾注了大量的时间，努力提升阅读的体验和品质。</p>
-<h3 id="9-_标签、分类和搜索">9. 标签、分类和搜索</h3><p>在编辑区任意行首位置输入以下格式的文字可以标签当前文档：</p>
-<p>标签： 未分类</p>
-<p>标签以后的文稿在【文件列表】（Ctrl+Alt+F）里会按照标签分类，用户可以同时使用键盘或者鼠标浏览查看，或者在【文件列表】的搜索文本框内搜索标题关键字过滤文稿，如下图所示：</p>
-<p><img src="https://www.zybuluo.com/static/img/file-list.png" alt="file-list"></p>
-<h3 id="10-_文稿发布和分享">10. 文稿发布和分享</h3><p>在您使用 Cmd Markdown 记录，创作，整理，阅读文稿的同时，我们不仅希望它是一个有力的工具，更希望您的思想和知识通过这个平台，连同优质的阅读体验，将他们分享给有相同志趣的人，进而鼓励更多的人来到这里记录分享他们的思想和知识，尝试点击 <i class="icon-share"></i> (Ctrl+Alt+P) 发布这份文档给好友吧！</p>
-<hr>
-<p>再一次感谢您花费时间阅读这份欢迎稿，点击 <i class="icon-file"></i> (Ctrl+Alt+N) 开始撰写新的文稿吧！祝您在这里记录、阅读、分享愉快！</p>
-<p>作者 <a href="http://weibo.com/ghosert" target="_blank" rel="external">@ghosert</a><br>2015 年 06月 15日    </p>
-<p>[^LaTeX]: 支持 <strong>LaTeX</strong> 编辑显示支持，例如：$\sum_{i=1}^n a_i=0$， 访问 <a href="http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference" target="_blank" rel="external">MathJax</a> 参考更多使用方法。</p>
-<p>[^code]: 代码高亮功能支持包括 Java, Python, JavaScript 在内的，<strong>四十一</strong>种主流编程语言。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/10/Markdown语法/" data-id="ciir6ne3r0009ogw56sa493hd" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Markdown/">Markdown</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- 多说评论框 start -->
-<div class="ds-thread" data-thread-key="post-Markdown语法" data-title="undefined" data-url="http://sunny-guangge.github.io/2015/11/10/Markdown语法/"></div>
-<!-- 多说评论框 end -->
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"sunny-guangge"};
-(function() {
-var ds = document.createElement('script');
-ds.type = 'text/javascript';ds.async = true;
-ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-ds.charset = 'UTF-8';
-(document.getElementsByTagName('head')[0]
-|| document.getElementsByTagName('body')[0]).appendChild(ds);
-})();
-</script>
-<!-- 多说公共JS代码 end -->
-  
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    </nav>
   
 </section>
         
@@ -813,7 +752,7 @@ ds.charset = 'UTF-8';
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">5</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">5</span></li></ul>
     </div>
   </div>
 
@@ -823,6 +762,10 @@ ds.charset = 'UTF-8';
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/12/29/3DTouch/">3DTouch</a>
+          </li>
         
           <li>
             <a href="/2015/12/17/学习笔记/">学习笔记</a>
@@ -838,10 +781,6 @@ ds.charset = 'UTF-8';
         
           <li>
             <a href="/2015/12/03/git学习总结/">git学习总结</a>
-          </li>
-        
-          <li>
-            <a href="/2015/12/02/XMPP个人总结/">XMPP个人总结</a>
           </li>
         
       </ul>
