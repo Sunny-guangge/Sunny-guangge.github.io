@@ -15,7 +15,7 @@
 <meta property="og:description" content="学习笔记（持续更新中…）
 1、插入到数组的最前面1NSRange range = NSMakeRange(0, newArray.count);&amp;#10;NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:range];&amp;#10;[array insertObjects:newArray atIndexes:set];
 2、添加pch文">
-<meta property="og:updated_time" content="2015-12-29T09:02:40.000Z">
+<meta property="og:updated_time" content="2016-01-05T09:24:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="学习笔记">
 <meta name="twitter:description" content="学习笔记（持续更新中…）
@@ -136,11 +136,12 @@
 <h3 id="当刚开始打开app时_会在">当刚开始打开app时  会在</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="方法里launchOptions_里有数据">方法里launchOptions 里有数据</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[launchOptions objectForKey:UIApplicationLaunchOptionsShortcutItemKey]</span><br></pre></td></tr></table></figure>
 <h3 id="这个类似于远程推送里第一次打开app时一样">这个类似于远程推送里第一次打开app时一样</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey]</span><br></pre></td></tr></table></figure>
-
+<h1 id="APP在后台的时候可以在这个方法里作操作比如发送数据到服务器_等">APP在后台的时候可以在这个方法里作操作比如发送数据到服务器 等</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^&#123;</span><br><span class="line"></span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<h1 id="关于html、CSS、JavaSc的关系">关于html、CSS、JavaSc的关系</h1><h1 id="HTML_定义了网页的内容">HTML 定义了网页的内容</h1><h1 id="CSS_描述了网页的布局">CSS 描述了网页的布局</h1><h1 id="JavaScript_网页的行为">JavaScript 网页的行为</h1>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="ciizcpzd40003h5w56ousqyiw" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cij16x5td0003idw57zlbu93c" class="article-share-link">Share</a>
       
       
     </footer>
