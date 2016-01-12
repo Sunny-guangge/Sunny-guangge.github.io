@@ -65,6 +65,67 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-block" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/11/19/block/" class="article-date">
+  <time datetime="2015-11-19T04:30:04.000Z" itemprop="datePublished">2015-11-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/11/19/block/">block</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>How Do I Declare A Block in Objective-C?</p>
+<p>As a local variable:</p>
+<p>returnType (^blockName)(parameterTypes) =  ^returnType(parameters) {…};<br>As a property:</p>
+<p>@property (nonatomic, copy) returnType (^blockName)(parameterTypes);<br>As a method parameter:</p>
+<ul>
+<li>(void)someMethodThatTakesABlock:(returnType(^)(parameterTypes))blockName;<br>As an argument to a method call:</li>
+</ul>
+<p>[someObject someMethodThatTakesABlock:^returnType (parameters) {…}];<br>As a typedef:</p>
+<p>typedef returnType (^TypeName)(parameterTypes);<br>TypeName blockName = ^returnType(parameters) {…};<br>This site is not intended to be an exhaustive list of all possible uses of blocks.<br>If you find yourself needing syntax not listed here, it is likely that a typedef would make your code more readable.</p>
+<p>Unable to access this site due to the profanity in the URL? (<a href="http://goshdarnblocksyntax.com" target="_blank" rel="external">http://goshdarnblocksyntax.com</a>) is a more work-friendly mirror.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="cij9u0cgn0008g2w54z0hkure" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="post-block" data-title="undefined" data-url="http://sunny-guangge.github.io/2015/11/19/block/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"sunny-guangge"};
+(function() {
+var ds = document.createElement('script');
+ds.type = 'text/javascript';ds.async = true;
+ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+ds.charset = 'UTF-8';
+(document.getElementsByTagName('head')[0]
+|| document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+<!-- 多说公共JS代码 end -->
+  
     <article id="post-hexo创建个人博客总结" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/11/11/hexo创建个人博客总结/" class="article-date">
@@ -105,7 +166,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="cij16x5th0005idw5z48t6fb2" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="cij9u0cgi0005g2w5keoiyaap" class="article-share-link">Share</a>
       
       
     </footer>
@@ -238,7 +299,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/10/Markdown语法/" data-id="cij16x5tp000aidw5xq7zb1ac" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/10/Markdown语法/" data-id="cij9u0cgr000ag2w5it5emw0y" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Markdown/">Markdown</a></li></ul>
@@ -298,7 +359,7 @@ ds.charset = 'UTF-8';
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">5</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">5</span></li></ul>
     </div>
   </div>
 
@@ -308,6 +369,10 @@ ds.charset = 'UTF-8';
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/01/11/Chisel使用/">Chisel使用</a>
+          </li>
         
           <li>
             <a href="/2016/01/04/iOS应用安全开发，你不知道的那些事/">iOS应用安全开发，你不知道的那些事</a>
@@ -323,10 +388,6 @@ ds.charset = 'UTF-8';
         
           <li>
             <a href="/2015/12/15/沙盒机制/">沙盒机制</a>
-          </li>
-        
-          <li>
-            <a href="/2015/12/07/面试题/">面试题</a>
           </li>
         
       </ul>
