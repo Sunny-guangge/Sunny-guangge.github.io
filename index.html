@@ -65,6 +65,73 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-coredata" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/14/coredata/" class="article-date">
+  <time datetime="2016-01-14T06:49:41.000Z" itemprop="datePublished">2016-01-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/14/coredata/">coredata</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="借鉴的一些网站：">借鉴的一些网站：</h2><p><a href="http://objccn.io" target="_blank" rel="external">http://objccn.io</a></p>
+<p>coreData概述<br><a href="http://objccn.io/issue-4-1/" target="_blank" rel="external">http://objccn.io/issue-4-1/</a>  </p>
+<p><a href="http://blog.csdn.net/q199109106q/article/details/8563438/" target="_blank" rel="external">http://blog.csdn.net/q199109106q/article/details/8563438/</a>  </p>
+<p>coreDa 实际应用<br><a href="http://objccn.io/issue-4-2/" target="_blank" rel="external">http://objccn.io/issue-4-2/</a>  </p>
+<p>数据模型和模型对象<br><a href="http://objccn.io/issue-4-4/" target="_blank" rel="external">http://objccn.io/issue-4-4/</a> </p>
+<h2 id="coredata的一些类">coredata的一些类</h2><h3 id="1、NSManagedObjectContext">1、NSManagedObjectContext</h3><p>管理对象，上下文，持久性存储模型对象<br>Managed Object Context 的作用相当重要，对数据对象进行的操作都与它有关。当创建一个数据对象并插入 Managed Object Context 中，Managed Object Context 就开始跟踪这个数据对象的一切变动，并在合适的时候提供对 undo/redo 的支持，或调用 Persistent Store Coordinato 将变化保存到数据文件中去。</p>
+<h3 id="2、NSManagedObjectModel">2、NSManagedObjectModel</h3><p>被管理的数据模型，数据结构</p>
+<h3 id="3、NSPersistentStoreCoordinator">3、NSPersistentStoreCoordinator</h3><p>连接数据库的，使用 Core Data document 类型的应用程序，通常会从磁盘上的数据文中中读取或存储数据，这写底层的读写就由 Persistent Store Coordinator 来处理。一般我们无需与它直接打交道来读写文件，Managed Object Context 在背后已经为我们调用 Persistent Store Coordinator 做了这部分工作。</p>
+<h3 id="4、NSManagedObject">4、NSManagedObject</h3><p>被管理的数据记录，Managed Object 表示数据文件中的一条记录，每一个 Managed Object 在内存中对应 Entity 的一个数据表示。Managed Object 的成员为 Entity 的 Property 所描述。</p>
+<h3 id="5、NSFetchRequest">5、NSFetchRequest</h3><p>数据请求，Fetch Requests 相当于一个查询语句，你必须指定要查询的 Entity。我们通过 Fetch Requests 向 Managed Object Context 查询符合条件的数据对象，以 NSArray 形式返回查询结果，如果我们没有设置任何查询条件，则返回该 Entity 的所有数据对象。我们可以使用谓词来设置查询条件，通常会将常用的 Fetch Requests 保存到 dictionary 以重复利用。</p>
+<h3 id="6、NSEntityDescription">6、NSEntityDescription</h3><p>表格实体结构，<br>Entity 相当于数据库中的一个表，它描述一种抽象数据类型，其对应的类为 NSManagedObject 或其子类。</p>
+<h3 id="7、NSFetchedResultsController">7、NSFetchedResultsController</h3><p>管理从数据库得到的数据，展示到UI上</p>
+<h2 id="1-搭建上下文环境">1.搭建上下文环境</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 从应用程序包中加载模型文件  </span><br><span class="line">NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:nil];  </span><br><span class="line">// 传入模型对象，初始化NSPersistentStoreCoordinator  </span><br><span class="line">NSPersistentStoreCoordinator *psc = [[[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model] autorelease];  </span><br><span class="line">// 构建SQLite数据库文件的路径  </span><br><span class="line">NSString *docs = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];  </span><br><span class="line">NSURL *url = [NSURL fileURLWithPath:[docs stringByAppendingPathComponent:@<span class="string">"person.data"</span>]];  </span><br><span class="line">// 添加持久化存储库，这里使用SQLite作为存储库  </span><br><span class="line">NSError *error = nil;  </span><br><span class="line">NSPersistentStore *store = [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url options:nil error:&amp;error];  </span><br><span class="line"><span class="keyword">if</span> (store == nil) &#123; // 直接抛异常  </span><br><span class="line">[NSException <span class="keyword">raise</span>:@<span class="string">"添加数据库错误"</span> format:@<span class="string">"%@"</span>, [error localizedDescription]];  </span><br><span class="line">&#125;  </span><br><span class="line">// 初始化上下文，设置persistentStoreCoordinator属性  </span><br><span class="line">NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];  </span><br><span class="line">context.persistentStoreCoordinator = psc;  </span><br><span class="line">// 用完之后，记得要[context release];</span><br></pre></td></tr></table></figure>
+<h2 id="2、添加数据到数据库">2、添加数据到数据库</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 传入上下文，创建一个Person实体对象  </span><br><span class="line">NSManagedObject *person = [NSEntityDescription insertNewObjectForEntityForName:@<span class="string">"Person"</span> inManagedObjectContext:context];  </span><br><span class="line">// 设置Person的简单属性  </span><br><span class="line">[person setValue:@<span class="string">"MJ"</span> forKey:@<span class="string">"name"</span>];  </span><br><span class="line">[person setValue:[NSNumber numberWithInt:<span class="number">27</span>] forKey:@<span class="string">"age"</span>];  </span><br><span class="line">// 传入上下文，创建一个Card实体对象  </span><br><span class="line">NSManagedObject *card = [NSEntityDescription insertNewObjectForEntityForName:@<span class="string">"Card"</span> inManagedObjectContext:context];  </span><br><span class="line">[card setValue:@<span class="string">"4414241933432"</span> forKey:@<span class="string">"no"</span>];  </span><br><span class="line">// 设置Person和Card之间的关联关系  </span><br><span class="line">[person setValue:card forKey:@<span class="string">"card"</span>];  </span><br><span class="line">// 利用上下文对象，将数据同步到持久化存储库  </span><br><span class="line">NSError *error = nil;  </span><br><span class="line">BOOL success = [context save:&amp;error];  </span><br><span class="line"><span class="keyword">if</span> (!success) &#123;  </span><br><span class="line">[NSException <span class="keyword">raise</span>:@<span class="string">"访问数据库错误"</span> format:@<span class="string">"%@"</span>, [error localizedDescription]];  </span><br><span class="line">&#125;  </span><br><span class="line">// 如果是想做更新操作：只要在更改了实体对象的属性后调用[context save:&amp;error]，就能将更改的数据同步到数据库</span><br></pre></td></tr></table></figure>
+<h2 id="3、从数据库中查询数据">3、从数据库中查询数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 传入上下文，创建一个Person实体对象  </span><br><span class="line">NSManagedObject *person = [NSEntityDescription insertNewObjectForEntityForName:@<span class="string">"Person"</span> inManagedObjectContext:context];  </span><br><span class="line">// 设置Person的简单属性  </span><br><span class="line">[person setValue:@<span class="string">"MJ"</span> forKey:@<span class="string">"name"</span>];  </span><br><span class="line">[person setValue:[NSNumber numberWithInt:<span class="number">27</span>] forKey:@<span class="string">"age"</span>];  </span><br><span class="line">// 传入上下文，创建一个Card实体对象  </span><br><span class="line">NSManagedObject *card = [NSEntityDescription insertNewObjectForEntityForName:@<span class="string">"Card"</span> inManagedObjectContext:context];  </span><br><span class="line">[card setValue:@<span class="string">"4414241933432"</span> forKey:@<span class="string">"no"</span>];  </span><br><span class="line">// 设置Person和Card之间的关联关系  </span><br><span class="line">[person setValue:card forKey:@<span class="string">"card"</span>];  </span><br><span class="line">// 利用上下文对象，将数据同步到持久化存储库  </span><br><span class="line">NSError *error = nil;  </span><br><span class="line">BOOL success = [context save:&amp;error];  </span><br><span class="line"><span class="keyword">if</span> (!success) &#123;  </span><br><span class="line">[NSException <span class="keyword">raise</span>:@<span class="string">"访问数据库错误"</span> format:@<span class="string">"%@"</span>, [error localizedDescription]];  </span><br><span class="line">&#125;  </span><br><span class="line">// 如果是想做更新操作：只要在更改了实体对象的属性后调用[context save:&amp;error]，就能将更改的数据同步到数据库</span><br></pre></td></tr></table></figure>
+<h2 id="4、删除数据库中得数据">4、删除数据库中得数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 传入需要删除的实体对象  </span><br><span class="line">[context deleteObject:managedObject];  </span><br><span class="line">// 将结果同步到数据库  </span><br><span class="line">NSError *error = nil;  </span><br><span class="line">[context save:&amp;error];  </span><br><span class="line"><span class="keyword">if</span> (error) &#123;  </span><br><span class="line">[NSException <span class="keyword">raise</span>:@<span class="string">"删除错误"</span> format:@<span class="string">"%@"</span>, [error localizedDescription]];  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sunny-guangge.github.io/2016/01/14/coredata/" data-id="cijdwc02a00083dw50p9ril36" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="post-coredata" data-title="undefined" data-url="http://sunny-guangge.github.io/2016/01/14/coredata/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"sunny-guangge"};
+(function() {
+var ds = document.createElement('script');
+ds.type = 'text/javascript';ds.async = true;
+ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+ds.charset = 'UTF-8';
+(document.getElementsByTagName('head')[0]
+|| document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+<!-- 多说公共JS代码 end -->
+  
     <article id="post-Chisel使用" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/01/11/Chisel使用/" class="article-date">
@@ -111,7 +178,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/11/Chisel使用/" data-id="cijb0breq000efaw50ktmgfhq" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/11/Chisel使用/" data-id="cijdwc02p000f3dw52nvdwgz3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -184,7 +251,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/04/iOS应用安全开发，你不知道的那些事/" data-id="cijb0bre70004faw5h221vvq8" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/04/iOS应用安全开发，你不知道的那些事/" data-id="cijdwc02400043dw5v912jlev" class="article-share-link">Share</a>
       
       
     </footer>
@@ -254,7 +321,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/29/3DTouch/" data-id="cijb0brdc0000faw5dkpl489t" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/29/3DTouch/" data-id="cijdwc00s00003dw5cj528gnm" class="article-share-link">Share</a>
       
       
     </footer>
@@ -352,7 +419,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cijb0bre50003faw5jjuyxzfu" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cijdwc02200033dw5x0d7prt4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -411,7 +478,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="cijb0bre20002faw5uzvk25so" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="cijdwc01z00023dw5l8mpmism" class="article-share-link">Share</a>
       
       
     </footer>
@@ -464,7 +531,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="cijb0brdu0001faw5hvq1byh8" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="cijdwc01t00013dw599dsywnp" class="article-share-link">Share</a>
       
       
     </footer>
@@ -540,7 +607,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="cijb0brec0007faw5ytuuiifi" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="cijdwc02900073dw511y5pa0o" class="article-share-link">Share</a>
       
       
     </footer>
@@ -600,7 +667,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="cijb0bref0009faw5b5ejhs3z" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="cijdwc02e000a3dw56u1o0luq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -660,7 +727,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/hello-world/" data-id="cijb0brea0006faw5m5bg81lz" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/hello-world/" data-id="cijdwc02700063dw5e3mi3w3u" class="article-share-link">Share</a>
       
       
     </footer>
@@ -670,63 +737,6 @@ ds.charset = 'UTF-8';
 
 <!-- 多说评论框 start -->
 <div class="ds-thread" data-thread-key="post-hello-world" data-title="undefined" data-url="http://sunny-guangge.github.io/2015/11/19/hello-world/"></div>
-<!-- 多说评论框 end -->
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"sunny-guangge"};
-(function() {
-var ds = document.createElement('script');
-ds.type = 'text/javascript';ds.async = true;
-ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-ds.charset = 'UTF-8';
-(document.getElementsByTagName('head')[0]
-|| document.getElementsByTagName('body')[0]).appendChild(ds);
-})();
-</script>
-<!-- 多说公共JS代码 end -->
-  
-    <article id="post-Core-Animation-总结" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/11/19/Core-Animation-总结/" class="article-date">
-  <time datetime="2015-11-19T08:06:35.000Z" itemprop="datePublished">2015-11-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/19/Core-Animation-总结/">Core Animation 总结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="CABasicAnimation_CAKeyframeAnimation_CATransition">CABasicAnimation CAKeyframeAnimation CATransition</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">//一次的滚动到某个位置</span><br><span class="line">CABasicAnimation *animation = [CABasicAnimation animation];</span><br><span class="line">animation.keyPath = @<span class="string">"position.y"</span>;//位置的移动</span><br><span class="line">animation.keyPath = @<span class="string">"transform.rotation.x"</span>;//绕着x轴旋转，.y绕y轴旋转，rotation绕中点旋转</span><br><span class="line">animation.fromValue = @<span class="number">60</span>;</span><br><span class="line">animation.toValue = @<span class="number">500</span>;</span><br><span class="line">animation.duration = <span class="number">1</span>;</span><br><span class="line">animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];//滚动先加速再减速</span><br><span class="line">animation.timingFunction = [CAMediaTimingFunction functionWithControlPoints:<span class="number">1.0</span> :<span class="number">0.0</span> :<span class="number">1.0</span> :<span class="number">0.1</span>];//可以自定义速度</span><br><span class="line"></span><br><span class="line">[self.testView.layer addAnimation:animation forKey:@<span class="string">"basic"</span>];</span><br><span class="line"></span><br><span class="line">self.testView.layer.position = CGPointMake(<span class="number">25</span>, <span class="number">500</span>);</span><br><span class="line"></span><br><span class="line">//多长时间之后另一个滚动</span><br><span class="line">animation.beginTime = CACurrentMediaTime() + <span class="number">0.5</span>;</span><br><span class="line">[self.nwTestView.layer addAnimation:animation forKey:@<span class="string">"basic"</span>];</span><br><span class="line"></span><br><span class="line">self.nwTestView.layer.position = CGPointMake(<span class="number">125</span>, <span class="number">500</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//连续晃动多次</span><br><span class="line">//设置路径</span><br><span class="line"><span class="comment">### 1、可以添加到CAKeyframeAnimation的path中</span></span><br><span class="line">CGMutablePathRef path=CGPathCreateMutable();</span><br><span class="line">CGPathMoveToPoint(path, NULL, <span class="number">40</span>, <span class="number">420</span>);</span><br><span class="line">CGPathAddCurveToPoint(path, NULL, <span class="number">40</span>, <span class="number">40</span>, <span class="number">160</span>, <span class="number">40</span>, <span class="number">160</span>, <span class="number">420</span>);</span><br><span class="line">CGPathAddCurveToPoint(path, NULL, <span class="number">160</span>, <span class="number">40</span>, <span class="number">280</span>, <span class="number">40</span>, <span class="number">280</span>, <span class="number">420</span>);</span><br><span class="line"><span class="number">2</span>、连续左右晃动 有种震动的效果</span><br><span class="line">CAKeyframeAnimation *animation1 = [CAKeyframeAnimation animation];</span><br><span class="line">animation1.keyPath = @<span class="string">"position.x"</span>;</span><br><span class="line">animation1.values = @[ @<span class="number">0</span>, @<span class="number">20</span>, @-<span class="number">20</span>, @<span class="number">20</span>,@-<span class="number">20</span>, @<span class="number">20</span>, @<span class="number">0</span> ];</span><br><span class="line">animation1.keyTimes = @[ @<span class="number">0</span>, @(<span class="number">1</span> / <span class="number">6.0</span>), @(<span class="number">3</span> / <span class="number">6.0</span>), @(<span class="number">5</span> / <span class="number">6.0</span>),@(<span class="number">7</span> / <span class="number">6.0</span>),@(<span class="number">9</span> / <span class="number">6.0</span>), @<span class="number">1</span> ];</span><br><span class="line">animation1.duration = <span class="number">10.6</span>;</span><br><span class="line"></span><br><span class="line">animation1.additive = YES;</span><br><span class="line"></span><br><span class="line">[self.shakeView.layer addAnimation:animation1 forKey:@<span class="string">"shake"</span>];</span><br><span class="line"></span><br><span class="line">//按照一定的线路滚动</span><br><span class="line">CGRect boundingRect = CGRectMake(-<span class="number">150</span>, -<span class="number">150</span>, <span class="number">300</span>, <span class="number">300</span>);</span><br><span class="line"></span><br><span class="line">CAKeyframeAnimation *orbit = [CAKeyframeAnimation animation];</span><br><span class="line">orbit.keyPath = @<span class="string">"position"</span>;</span><br><span class="line">orbit.path = CFAutorelease(CGPathCreateWithEllipseInRect(boundingRect, NULL));//绕着一个圆不停的转动</span><br><span class="line">orbit.duration = <span class="number">4</span>;</span><br><span class="line">orbit.additive = YES;</span><br><span class="line">orbit.repeatCount = HUGE_VALF;</span><br><span class="line">orbit.calculationMode = kCAAnimationPaced;</span><br><span class="line">orbit.rotationMode = kCAAnimationRotateAuto;</span><br><span class="line"></span><br><span class="line">[self.nwTestView.layer addAnimation:orbit forKey:@<span class="string">"orbit"</span>];</span><br><span class="line"></span><br><span class="line">//立体的<span class="number">3</span>D转效果</span><br><span class="line">CATransition *animation11 = [CATransition animation];</span><br><span class="line">animation11.delegate = self;</span><br><span class="line">animation11.duration = <span class="number">2</span>;</span><br><span class="line">animation11.timingFunction = UIViewAnimationCurveEaseInOut;</span><br><span class="line">//animation.type = kCATransitionFade;</span><br><span class="line">animation11.type = @<span class="string">"cube"</span>;</span><br><span class="line">animation11.subtype = kCATransitionFromLeft;</span><br><span class="line">//<span class="number">2</span>个view交换</span><br><span class="line">NSUInteger green = [[self.view subviews] indexOfObject:self.nwTestView];</span><br><span class="line">NSUInteger blue = [[self.view subviews] indexOfObject:self.testView];</span><br><span class="line">[self.view exchangeSubviewAtIndex:green withSubviewAtIndex:blue];</span><br><span class="line">[self.shakeView.layer addAnimation:animation11 forKey:@<span class="string">"animation"</span>];</span><br></pre></td></tr></table></figure>
-<p>CALayer的子类 CAReplicatorLayer</p>
-<h3 id="1、_CAReplicatorLayer创建layer和它的sublayer的多个副本，副本可以设置transform来变形，或者设置颜色、透明度的变化">1、 CAReplicatorLayer创建layer和它的sublayer的多个副本，副本可以设置transform来变形，或者设置颜色、透明度的变化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">CAReplicatorLayer *layer = (CAReplicatorLayer *)self.view.layer;</span><br><span class="line">layer.instanceCount = <span class="number">2</span>;</span><br><span class="line">CATransform3D t = CATransform3DMakeTranslation(<span class="number">0</span>, self.view.frame.size.height + <span class="number">5</span>, <span class="number">0</span>);</span><br><span class="line">t = CATransform3DRotate(t, M_PI, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">t = CATransform3DScale(t, <span class="number">1</span>, <span class="number">0.8</span>, <span class="number">1</span>);</span><br><span class="line">layer.instanceTransform = t;</span><br><span class="line">layer.instanceAlphaOffset = -<span class="number">0.1</span>;</span><br><span class="line">layer.instanceRedOffset = -<span class="number">0.1</span>;</span><br><span class="line">layer.instanceGreenOffset = -<span class="number">0.1</span>;</span><br><span class="line">layer.instanceBlueOffset = -<span class="number">0.1</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="2、雪花的飘动，燃烧的火焰，烟雾效果，其实都是通过这个类的设置来实现的_CAEmitterLayer_和_CAEmitterCell">2、雪花的飘动，燃烧的火焰，烟雾效果，其实都是通过这个类的设置来实现的 CAEmitterLayer 和 CAEmitterCell</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">// Configure the particle emitter to the top edge of the screen</span><br><span class="line">CAEmitterLayer *snowEmitter = [CAEmitterLayer layer];</span><br><span class="line">snowEmitter.emitterPosition = CGPointMake(self.view.bounds.size.width / <span class="number">2.0</span>, -<span class="number">30</span>);//设置发射位置，这个和emitterMode有关</span><br><span class="line">snowEmitter.emitterZPosition=<span class="number">50</span>;//发射点z的位置，这个和emitterMode有关</span><br><span class="line">snowEmitter.emitterSize     = CGSizeMake(self.view.bounds.size.width * <span class="number">2.0</span>, <span class="number">0.0</span>);//发射点的范围，这个和emitterMode有关</span><br><span class="line">snowEmitter.emitterDepth=<span class="number">100</span>;</span><br><span class="line">//从线上发射</span><br><span class="line">//    snowEmitter.emitterMode        = kCAEmitterLayerOutline;</span><br><span class="line">//   snowEmitter.emitterShape    = kCAEmitterLayerLine;</span><br><span class="line">//从一个立方体内发射出，这样的话雪花会有不同的大小在<span class="number">3</span>D的情况下</span><br><span class="line">snowEmitter.emitterMode      = kCAEmitterLayerVolume;</span><br><span class="line">snowEmitter.emitterShape    = kCAEmitterLayerCuboid;</span><br><span class="line"></span><br><span class="line">//设置发射单元</span><br><span class="line">CAEmitterCell *snowflake = [CAEmitterCell emitterCell];</span><br><span class="line">snowflake.birthRate     = <span class="number">3.0</span>;//每秒发生<span class="number">1</span>个</span><br><span class="line">snowflake.lifetime      = <span class="number">60.0</span>;//生存时间为<span class="number">120</span>秒</span><br><span class="line">snowflake.velocity      = <span class="number">20</span>;               //初始速度</span><br><span class="line">snowflake.velocityRange = <span class="number">30</span>;//初始速度的随机范围</span><br><span class="line">snowflake.yAcceleration = <span class="number">50</span>;//y轴加速度，当然还有z,x轴</span><br><span class="line"></span><br><span class="line">//snowflake.emissionRange = -<span class="number">0.5</span> * M_PI;        // 发射角度范围 ,这个参数一设置，似乎方向只能朝屏幕内，就是z的负轴</span><br><span class="line"></span><br><span class="line">snowflake.spin=<span class="number">0.0</span>;</span><br><span class="line">snowflake.spinRange     =- <span class="number">0.25</span> * M_PI;     // 自旋转范围</span><br><span class="line"></span><br><span class="line">snowflake.contents      = (id) [[UIImage imageNamed:@<span class="string">"flake"</span>] CGImage];</span><br><span class="line">snowflake.color         = [[UIColor colorWithRed:<span class="number">0.600</span> green:<span class="number">0.658</span> blue:<span class="number">0.743</span> alpha:<span class="number">1.000</span>] CGColor];</span><br><span class="line"></span><br><span class="line">// Make the flakes seem inset <span class="keyword">in</span> the background</span><br><span class="line">snowEmitter.shadowOpacity = <span class="number">1.0</span>;</span><br><span class="line">snowEmitter.shadowRadius  = <span class="number">0.0</span>;</span><br><span class="line">snowEmitter.shadowOffset  = CGSizeMake(<span class="number">0.0</span>, <span class="number">1.0</span>);</span><br><span class="line">snowEmitter.shadowColor   = [[UIColor whiteColor] CGColor];</span><br><span class="line"></span><br><span class="line">//snowflake.emissionLatitude=-M_PI_2;//按照Z轴旋转</span><br><span class="line">snowEmitter.preservesDepth=YES;</span><br><span class="line">CATransform3D transform = CATransform3DIdentity;</span><br><span class="line">transform.m34 = -<span class="number">1.0</span>/<span class="number">300.0</span>f;</span><br><span class="line">self.view.layer.transform=transform;</span><br><span class="line"></span><br><span class="line">// Add everything to our backing layer below the UIContol defined <span class="keyword">in</span> the storyboard</span><br><span class="line">snowEmitter.emitterCells = [NSArray arrayWithObject:snowflake];</span><br><span class="line">[self.view.layer insertSublayer:snowEmitter atIndex:<span class="number">0</span>];</span><br></pre></td></tr></table></figure>
-<h3 id="3、_CAGradientLayer用来绘制渐变色，指定几个颜色值、渐变结束位置，就能在layer中绘制出渐变效果">3、 CAGradientLayer用来绘制渐变色，指定几个颜色值、渐变结束位置，就能在layer中绘制出渐变效果</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">//iamgeview设置渐变色</span><br><span class="line">UIImageView *iamgeView = [[UIImageView alloc] initWithFrame:self.view.frame];</span><br><span class="line">[self.view addSubview:iamgeView];</span><br><span class="line"></span><br><span class="line">CAGradientLayer *gradientlayer = [CAGradientLayer layer];</span><br><span class="line">CGRect frame = iamgeView.frame;</span><br><span class="line">frame.origin = CGPointMake(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">gradientlayer.frame = frame;</span><br><span class="line">gradientlayer.opacity = <span class="number">0.5</span>;</span><br><span class="line">gradientlayer.colors = @[(id)[UIColor redColor].CGColor,(id)[UIColor greenColor].CGColor,(id)[UIColor yellowColor].CGColor,(id)[UIColor blueColor].CGColor];</span><br><span class="line">gradientlayer.locations = @[@<span class="number">0.2</span>,@<span class="number">0.4</span>,@<span class="number">0.6</span>,@<span class="number">0.8</span>];</span><br><span class="line">gradientlayer.startPoint = CGPointMake(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">gradientlayer.endPoint = CGPointMake(<span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">[iamgeView.layer insertSublayer:gradientlayer above:iamgeView.layer];</span><br></pre></td></tr></table></figure>
-<h3 id="4、更多的layer子类：CATransformLayer_、_CATiledLayer_、_CAScrollLayer">4、更多的layer子类：CATransformLayer 、 CATiledLayer 、 CAScrollLayer</h3><p>(<a href="http://www.15yan.com/story/gBdPD09UWFT/" target="_blank" rel="external">http://www.15yan.com/story/gBdPD09UWFT/</a>)</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/" data-id="cijb0brep000dfaw5ytbg4i0j" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-<!-- 多说评论框 start -->
-<div class="ds-thread" data-thread-key="post-Core-Animation-总结" data-title="undefined" data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/"></div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
@@ -775,7 +785,7 @@ ds.charset = 'UTF-8';
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">5</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">5</span></li></ul>
     </div>
   </div>
 
@@ -785,6 +795,10 @@ ds.charset = 'UTF-8';
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/01/14/coredata/">coredata</a>
+          </li>
         
           <li>
             <a href="/2016/01/11/Chisel使用/">Chisel使用</a>
@@ -800,10 +814,6 @@ ds.charset = 'UTF-8';
         
           <li>
             <a href="/2015/12/17/学习笔记/">学习笔记</a>
-          </li>
-        
-          <li>
-            <a href="/2015/12/15/沙盒机制/">沙盒机制</a>
           </li>
         
       </ul>

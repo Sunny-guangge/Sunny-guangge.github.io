@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>coredata | sunny</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="借鉴的一些网站：http://objccn.io
+coreData概述http://objccn.io/issue-4-1/  
+http://blog.csdn.net/q199109106q/article/details/8563438/  
+coreDa 实际应用http://objccn.io/issue-4-2/  
+数据模型和模型对象http://objccn.io/issue-4-">
+<meta property="og:type" content="article">
+<meta property="og:title" content="coredata">
+<meta property="og:url" content="http://sunny-guangge.github.io/2016/01/14/coredata/index.html">
+<meta property="og:site_name" content="sunny">
+<meta property="og:description" content="借鉴的一些网站：http://objccn.io
+coreData概述http://objccn.io/issue-4-1/  
+http://blog.csdn.net/q199109106q/article/details/8563438/  
+coreDa 实际应用http://objccn.io/issue-4-2/  
+数据模型和模型对象http://objccn.io/issue-4-">
+<meta property="og:updated_time" content="2016-01-14T07:41:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="coredata">
+<meta name="twitter:description" content="借鉴的一些网站：http://objccn.io
+coreData概述http://objccn.io/issue-4-1/  
+http://blog.csdn.net/q199109106q/article/details/8563438/  
+coreDa 实际应用http://objccn.io/issue-4-2/  
+数据模型和模型对象http://objccn.io/issue-4-">
+  
+    <link rel="alternative" href="/atom.xml" title="sunny" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">sunny</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个程序猿的自我修养</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://sunny-guangge.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-coredata" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/14/coredata/" class="article-date">
+  <time datetime="2016-01-14T06:49:41.000Z" itemprop="datePublished">2016-01-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      coredata
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="借鉴的一些网站：">借鉴的一些网站：</h2><p><a href="http://objccn.io" target="_blank" rel="external">http://objccn.io</a></p>
+<p>coreData概述<br><a href="http://objccn.io/issue-4-1/" target="_blank" rel="external">http://objccn.io/issue-4-1/</a>  </p>
+<p><a href="http://blog.csdn.net/q199109106q/article/details/8563438/" target="_blank" rel="external">http://blog.csdn.net/q199109106q/article/details/8563438/</a>  </p>
+<p>coreDa 实际应用<br><a href="http://objccn.io/issue-4-2/" target="_blank" rel="external">http://objccn.io/issue-4-2/</a>  </p>
+<p>数据模型和模型对象<br><a href="http://objccn.io/issue-4-4/" target="_blank" rel="external">http://objccn.io/issue-4-4/</a> </p>
+<h2 id="coredata的一些类">coredata的一些类</h2><h3 id="1、NSManagedObjectContext">1、NSManagedObjectContext</h3><p>管理对象，上下文，持久性存储模型对象<br>Managed Object Context 的作用相当重要，对数据对象进行的操作都与它有关。当创建一个数据对象并插入 Managed Object Context 中，Managed Object Context 就开始跟踪这个数据对象的一切变动，并在合适的时候提供对 undo/redo 的支持，或调用 Persistent Store Coordinato 将变化保存到数据文件中去。</p>
+<h3 id="2、NSManagedObjectModel">2、NSManagedObjectModel</h3><p>被管理的数据模型，数据结构</p>
+<h3 id="3、NSPersistentStoreCoordinator">3、NSPersistentStoreCoordinator</h3><p>连接数据库的，使用 Core Data document 类型的应用程序，通常会从磁盘上的数据文中中读取或存储数据，这写底层的读写就由 Persistent Store Coordinator 来处理。一般我们无需与它直接打交道来读写文件，Managed Object Context 在背后已经为我们调用 Persistent Store Coordinator 做了这部分工作。</p>
+<h3 id="4、NSManagedObject">4、NSManagedObject</h3><p>被管理的数据记录，Managed Object 表示数据文件中的一条记录，每一个 Managed Object 在内存中对应 Entity 的一个数据表示。Managed Object 的成员为 Entity 的 Property 所描述。</p>
+<h3 id="5、NSFetchRequest">5、NSFetchRequest</h3><p>数据请求，Fetch Requests 相当于一个查询语句，你必须指定要查询的 Entity。我们通过 Fetch Requests 向 Managed Object Context 查询符合条件的数据对象，以 NSArray 形式返回查询结果，如果我们没有设置任何查询条件，则返回该 Entity 的所有数据对象。我们可以使用谓词来设置查询条件，通常会将常用的 Fetch Requests 保存到 dictionary 以重复利用。</p>
+<h3 id="6、NSEntityDescription">6、NSEntityDescription</h3><p>表格实体结构，<br>Entity 相当于数据库中的一个表，它描述一种抽象数据类型，其对应的类为 NSManagedObject 或其子类。</p>
+<h3 id="7、NSFetchedResultsController">7、NSFetchedResultsController</h3><p>管理从数据库得到的数据，展示到UI上</p>
+<h2 id="1-搭建上下文环境">1.搭建上下文环境</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 从应用程序包中加载模型文件  </span><br><span class="line">NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:nil];  </span><br><span class="line">// 传入模型对象，初始化NSPersistentStoreCoordinator  </span><br><span class="line">NSPersistentStoreCoordinator *psc = [[[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model] autorelease];  </span><br><span class="line">// 构建SQLite数据库文件的路径  </span><br><span class="line">NSString *docs = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];  </span><br><span class="line">NSURL *url = [NSURL fileURLWithPath:[docs stringByAppendingPathComponent:@<span class="string">"person.data"</span>]];  </span><br><span class="line">// 添加持久化存储库，这里使用SQLite作为存储库  </span><br><span class="line">NSError *error = nil;  </span><br><span class="line">NSPersistentStore *store = [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:url options:nil error:&amp;error];  </span><br><span class="line"><span class="keyword">if</span> (store == nil) &#123; // 直接抛异常  </span><br><span class="line">[NSException <span class="keyword">raise</span>:@<span class="string">"添加数据库错误"</span> format:@<span class="string">"%@"</span>, [error localizedDescription]];  </span><br><span class="line">&#125;  </span><br><span class="line">// 初始化上下文，设置persistentStoreCoordinator属性  </span><br><span class="line">NSManagedObjectContext *context = [[NSManagedObjectContext alloc] init];  </span><br><span class="line">context.persistentStoreCoordinator = psc;  </span><br><span class="line">// 用完之后，记得要[context release];</span><br></pre></td></tr></table></figure>
+<h2 id="2、添加数据到数据库">2、添加数据到数据库</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 传入上下文，创建一个Person实体对象  </span><br><span class="line">NSManagedObject *person = [NSEntityDescription insertNewObjectForEntityForName:@<span class="string">"Person"</span> inManagedObjectContext:context];  </span><br><span class="line">// 设置Person的简单属性  </span><br><span class="line">[person setValue:@<span class="string">"MJ"</span> forKey:@<span class="string">"name"</span>];  </span><br><span class="line">[person setValue:[NSNumber numberWithInt:<span class="number">27</span>] forKey:@<span class="string">"age"</span>];  </span><br><span class="line">// 传入上下文，创建一个Card实体对象  </span><br><span class="line">NSManagedObject *card = [NSEntityDescription insertNewObjectForEntityForName:@<span class="string">"Card"</span> inManagedObjectContext:context];  </span><br><span class="line">[card setValue:@<span class="string">"4414241933432"</span> forKey:@<span class="string">"no"</span>];  </span><br><span class="line">// 设置Person和Card之间的关联关系  </span><br><span class="line">[person setValue:card forKey:@<span class="string">"card"</span>];  </span><br><span class="line">// 利用上下文对象，将数据同步到持久化存储库  </span><br><span class="line">NSError *error = nil;  </span><br><span class="line">BOOL success = [context save:&amp;error];  </span><br><span class="line"><span class="keyword">if</span> (!success) &#123;  </span><br><span class="line">[NSException <span class="keyword">raise</span>:@<span class="string">"访问数据库错误"</span> format:@<span class="string">"%@"</span>, [error localizedDescription]];  </span><br><span class="line">&#125;  </span><br><span class="line">// 如果是想做更新操作：只要在更改了实体对象的属性后调用[context save:&amp;error]，就能将更改的数据同步到数据库</span><br></pre></td></tr></table></figure>
+<h2 id="3、从数据库中查询数据">3、从数据库中查询数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 传入上下文，创建一个Person实体对象  </span><br><span class="line">NSManagedObject *person = [NSEntityDescription insertNewObjectForEntityForName:@<span class="string">"Person"</span> inManagedObjectContext:context];  </span><br><span class="line">// 设置Person的简单属性  </span><br><span class="line">[person setValue:@<span class="string">"MJ"</span> forKey:@<span class="string">"name"</span>];  </span><br><span class="line">[person setValue:[NSNumber numberWithInt:<span class="number">27</span>] forKey:@<span class="string">"age"</span>];  </span><br><span class="line">// 传入上下文，创建一个Card实体对象  </span><br><span class="line">NSManagedObject *card = [NSEntityDescription insertNewObjectForEntityForName:@<span class="string">"Card"</span> inManagedObjectContext:context];  </span><br><span class="line">[card setValue:@<span class="string">"4414241933432"</span> forKey:@<span class="string">"no"</span>];  </span><br><span class="line">// 设置Person和Card之间的关联关系  </span><br><span class="line">[person setValue:card forKey:@<span class="string">"card"</span>];  </span><br><span class="line">// 利用上下文对象，将数据同步到持久化存储库  </span><br><span class="line">NSError *error = nil;  </span><br><span class="line">BOOL success = [context save:&amp;error];  </span><br><span class="line"><span class="keyword">if</span> (!success) &#123;  </span><br><span class="line">[NSException <span class="keyword">raise</span>:@<span class="string">"访问数据库错误"</span> format:@<span class="string">"%@"</span>, [error localizedDescription]];  </span><br><span class="line">&#125;  </span><br><span class="line">// 如果是想做更新操作：只要在更改了实体对象的属性后调用[context save:&amp;error]，就能将更改的数据同步到数据库</span><br></pre></td></tr></table></figure>
+<h2 id="4、删除数据库中得数据">4、删除数据库中得数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 传入需要删除的实体对象  </span><br><span class="line">[context deleteObject:managedObject];  </span><br><span class="line">// 将结果同步到数据库  </span><br><span class="line">NSError *error = nil;  </span><br><span class="line">[context save:&amp;error];  </span><br><span class="line"><span class="keyword">if</span> (error) &#123;  </span><br><span class="line">[NSException <span class="keyword">raise</span>:@<span class="string">"删除错误"</span> format:@<span class="string">"%@"</span>, [error localizedDescription]];  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sunny-guangge.github.io/2016/01/14/coredata/" data-id="cijdwc02a00083dw50p9ril36" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/01/11/Chisel使用/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Chisel使用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="post-coredata" data-title="coredata" data-url="http://sunny-guangge.github.io/2016/01/14/coredata/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"sunny-guangge"};
+(function() {
+var ds = document.createElement('script');
+ds.type = 'text/javascript';ds.async = true;
+ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+ds.charset = 'UTF-8';
+(document.getElementsByTagName('head')[0]
+|| document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+<!-- 多说公共JS代码 end --></section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown/">Markdown</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Markdown/" style="font-size: 10px;">Markdown</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/01/14/coredata/">coredata</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/11/Chisel使用/">Chisel使用</a>
+          </li>
+        
+          <li>
+            <a href="/2016/01/04/iOS应用安全开发，你不知道的那些事/">iOS应用安全开发，你不知道的那些事</a>
+          </li>
+        
+          <li>
+            <a href="/2015/12/29/3DTouch/">3DTouch</a>
+          </li>
+        
+          <li>
+            <a href="/2015/12/17/学习笔记/">学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 sunny<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
