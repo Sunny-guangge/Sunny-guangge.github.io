@@ -107,7 +107,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/14/coredata/" data-id="cijdwc02a00083dw50p9ril36" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/14/coredata/" data-id="cije3bbuv000818w5hyy87ab6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -178,7 +178,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/11/Chisel使用/" data-id="cijdwc02p000f3dw52nvdwgz3" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/11/Chisel使用/" data-id="cije3bbv9000f18w5qvqo8pwy" class="article-share-link">Share</a>
       
       
     </footer>
@@ -251,7 +251,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/04/iOS应用安全开发，你不知道的那些事/" data-id="cijdwc02400043dw5v912jlev" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/04/iOS应用安全开发，你不知道的那些事/" data-id="cije3bbup000418w51nejdmef" class="article-share-link">Share</a>
       
       
     </footer>
@@ -321,7 +321,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/29/3DTouch/" data-id="cijdwc00s00003dw5cj528gnm" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/29/3DTouch/" data-id="cije3bbtu000018w5rbgsvwzm" class="article-share-link">Share</a>
       
       
     </footer>
@@ -419,7 +419,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cijdwc02200033dw5x0d7prt4" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cije3bbun000318w5tyrlqucq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -478,7 +478,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="cijdwc01z00023dw5l8mpmism" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="cije3bbul000218w52ox7m78d" class="article-share-link">Share</a>
       
       
     </footer>
@@ -527,11 +527,14 @@ ds.charset = 'UTF-8';
       
         <h3 id="1、retain_和_copy各自的set方法">1、retain 和 copy各自的set方法</h3><p>当用copy时，set方法会先release旧值，再copy一个新的对象，reference count 为1（减少了对上下文的依赖）；retain，release旧值，retain新值；a ssign，直接赋值，无retain操作。retain使引用计数+1，copy是复制一个新对象<br>retain的set 、get方法<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (void)setAge:(NSString *)age</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span>(age != _age)</span><br><span class="line">&#123;</span><br><span class="line">[_age release];</span><br><span class="line">age = [_age retain];</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">- (NSString *)_age</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">return</span> [[_age retain] autorelease];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>copy的set、get方法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (void)setNum:(NSString *)num</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">if</span>(_num != num)</span><br><span class="line">&#123;</span><br><span class="line">[_num release];</span><br><span class="line">_num = [num copy];</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSString *)_num</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">return</span> [[_num retain] autorelease];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="strong_和weak的区别">strong 和weak的区别</h2><p>weak型的指针变量仍然可以指向一个对象，但不属于对象的拥有者（指针指向对象的，当对象释放之后，weak修饰的指针指向nil）<br>• strong : 该属性值对应 <strong>strong 关键字，即该属性所声明的变量将成为对象的持有者，等同于”retain”<br>• weak : 该属性对应 </strong>weak 关键字，与 <strong>weak 定义的变量一致，该属性所声明的变量将没有对象的所有权，并且当对象被释放之后，对象将被自动赋值nil,记住IBOutlet应该使用weak<br>• unsafe_unretained : 等效于</strong>unsafe_unretaind关键字声明的变量，等同于之前的”assign”，iOS 5之前的系统用该属性代替 weak 来使用<br>• copy : 和之前的copy一样,复制一个对象并创建strong关联<br>• assign : 对象不能使用assign,但原始类型(BOOL、int、float)仍然可以使用</p>
+<h2 id="ViewController的生命周期">ViewController的生命周期</h2><p>1.第一次访问UIViewController的view时，view为nil，然后就会调用loadView方法创建view<br>2.view创建完毕后会调用viewDidLoad方法进行界面元素的初始化<br>3.当内存警告时，系统可能会释放UIViewController的view，将view赋值为nil，并且调用viewDidUnload方法<br>4.当再次访问UIViewController的view时，view已经在3中被赋值为nil，所以又会调用loadView方法重新创建view<br>5.view被重新创建完毕后，还是会调用viewDidLoad方法进行界面元素的初始化</p>
+<h2 id="iOS6-0及以上版本的内存警告：">iOS6.0及以上版本的内存警告：</h2><p>调用didReceiveMemoryWarning内调用super的didReceiveMemoryWarning调只是释放controller的resouse，不会释放view<br>处理方法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">-(void)didReceiveMemoryWarning</span><br><span class="line">&#123;</span><br><span class="line">    [super didReceiveMemoryWarning];//即使没有显示在window上，也不会自动的将self.view释放。</span><br><span class="line">    // Add code to clean up any of your own resources that are no longer necessary.</span><br><span class="line"></span><br><span class="line">    // 此处做兼容处理需要加上ios6<span class="number">.0</span>的宏开关，保证是在<span class="number">6.0</span>下使用的,<span class="number">6.0</span>以前屏蔽以下代码，否则会在下面使用self.view时自动加载viewDidUnLoad</span><br><span class="line">    <span class="keyword">if</span> ([[UIDevice currentDevice].systemVersion floatValue] &gt;= <span class="number">6.0</span>) &#123;</span><br><span class="line">        //需要注意的是self.isViewLoaded是必不可少的，其他方式访问视图会导致它加载 ，在WWDC视频也忽视这一点。</span><br><span class="line">        <span class="keyword">if</span> (self.isViewLoaded &amp;&amp; !self.view.window)// 是否是正在使用的视图</span><br><span class="line">        &#123;</span><br><span class="line">        // Add code to preserve data stored <span class="keyword">in</span> the views that might be</span><br><span class="line">        // needed later.</span><br><span class="line"></span><br><span class="line">        // Add code to clean up other strong references to the view <span class="keyword">in</span></span><br><span class="line">        // the view hierarchy.</span><br><span class="line">        self.view = nil;// 目的是再次进入时能够重新加载调用viewDidLoad函数。</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="cijdwc01t00013dw599dsywnp" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="cije3bbud000118w5zvo4zrl7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -607,7 +610,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="cijdwc02900073dw511y5pa0o" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="cije3bbuu000718w53qzz7ocr" class="article-share-link">Share</a>
       
       
     </footer>
@@ -667,7 +670,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="cijdwc02e000a3dw56u1o0luq" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="cije3bbuz000a18w5xe4y6bpm" class="article-share-link">Share</a>
       
       
     </footer>
@@ -727,7 +730,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/hello-world/" data-id="cijdwc02700063dw5e3mi3w3u" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/hello-world/" data-id="cije3bbus000618w5mxtnzjm7" class="article-share-link">Share</a>
       
       
     </footer>
