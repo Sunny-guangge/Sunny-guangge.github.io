@@ -5,16 +5,16 @@
   
   <title>多线程 | sunny</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
+  <meta name="description" content="PthreadPOSIX线程（POSIX threads），简称Pthreads，是线程的POSIX标准。该标准定义了创建和操纵线程的一整套API。在类Unix操作系统（Unix、Linux、Mac OS X等）中，都使用Pthreads作为操作系统的线程。这是一套在很多操作系统上都通用的多线程API，所以移植性很强（然并卵），当然在 iOS 中也是可以的。不过这是基于 c语言 的框架，使用起来这">
 <meta property="og:type" content="article">
 <meta property="og:title" content="多线程">
 <meta property="og:url" content="http://sunny-guangge.github.io/2016/01/15/多线程/index.html">
 <meta property="og:site_name" content="sunny">
-<meta property="og:description">
-<meta property="og:updated_time" content="2016-01-15T08:13:00.000Z">
+<meta property="og:description" content="PthreadPOSIX线程（POSIX threads），简称Pthreads，是线程的POSIX标准。该标准定义了创建和操纵线程的一整套API。在类Unix操作系统（Unix、Linux、Mac OS X等）中，都使用Pthreads作为操作系统的线程。这是一套在很多操作系统上都通用的多线程API，所以移植性很强（然并卵），当然在 iOS 中也是可以的。不过这是基于 c语言 的框架，使用起来这">
+<meta property="og:updated_time" content="2016-01-15T09:04:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="多线程">
-<meta name="twitter:description">
+<meta name="twitter:description" content="PthreadPOSIX线程（POSIX threads），简称Pthreads，是线程的POSIX标准。该标准定义了创建和操纵线程的一整套API。在类Unix操作系统（Unix、Linux、Mac OS X等）中，都使用Pthreads作为操作系统的线程。这是一套在很多操作系统上都通用的多线程API，所以移植性很强（然并卵），当然在 iOS 中也是可以的。不过这是基于 c语言 的框架，使用起来这">
   
     <link rel="alternative" href="/atom.xml" title="sunny" type="application/atom+xml">
   
@@ -86,11 +86,40 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h1 id="Pthread">Pthread</h1><p>POSIX线程（POSIX threads），简称Pthreads，是线程的POSIX标准。该标准定义了创建和操纵线程的一整套API。在类Unix操作系统（Unix、Linux、Mac OS X等）中，都使用Pthreads作为操作系统的线程。<br>这是一套在很多操作系统上都通用的多线程API，所以移植性很强（然并卵），当然在 iOS 中也是可以的。不过这是基于 c语言 的框架，使用起来这酸爽！<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#import &lt;pthread.h&gt;</span></span><br><span class="line"></span><br><span class="line">- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event &#123;</span><br><span class="line">    pthread_t thread;</span><br><span class="line">    //创建一个线程并自动执行</span><br><span class="line">    pthread_create(&amp;thread, NULL, start, NULL);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void *start(void *data) &#123;</span><br><span class="line">    NSLog(@<span class="string">"%@"</span>, [NSThread currentThread]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> NULL;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="NSThread">NSThread</h1><p>这套方案是经过苹果封装后的，并且完全面向对象的。所以你可以直接操控线程对象，非常直观和方便。但是，它的生命周期还是需要我们手动管理，所以这套方案也是偶尔用用，比如 [NSThread currentThread]，它可以获取当前线程类，你就可以知道当前线程的各种属性，用于调试十分方便。下面来看看它的一些用法。</p>
+<h1 id="GCD">GCD</h1><p>Grand Central Dispatch，听名字就霸气。它是苹果为多核的并行运算提出的解决方案，所以会自动合理地利用更多的CPU内核（比如双核、四核），最重要的是它会自动管理线程的生命周期（创建线程、调度任务、销毁线程），完全不需要我们管理，我们只需要告诉干什么就行。同时它使用的也是 c语言，不过由于使用了 Block（Swift里叫做闭包），使得使用起来更加方便，而且灵活。所以基本上大家都使用 GCD 这套方案，老少咸宜</p>
+<h3 id="任务和队列">任务和队列</h3><p>在 GCD 中，加入了两个非常重要的概念： 任务 和 队列。</p>
+<h3 id="任务：即操作，你想要干什么，说白了就是一段代码，在_GCD_中就是一个_Block，所以添加任务十分方便。任务有两种执行方式：_同步执行_和_异步执行，他们之间的区别是_是否会创建新的线程。">任务：即操作，你想要干什么，说白了就是一段代码，在 GCD 中就是一个 Block，所以添加任务十分方便。任务有两种执行方式： 同步执行 和 异步执行，他们之间的区别是 是否会创建新的线程。</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">同步（sync） 和 异步（<span class="keyword">async</span>） 的主要区别在于会不会阻塞当前线程，直到 Block 中的任务执行完毕！</span><br><span class="line">如果是 同步（sync） 操作，它会阻塞当前线程并等待 Block 中的任务执行完毕，然后当前线程才会继续往下运行。</span><br><span class="line">如果是 异步（<span class="keyword">async</span>）操作，当前线程会直接往下执行，它不会阻塞当前线程。</span><br></pre></td></tr></table></figure>
+<h3 id="队列：用于存放任务。一共有两种队列，_串行队列_和_并行队列">队列：用于存放任务。一共有两种队列， 串行队列 和 并行队列</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">串行队列：放到串行队列的任务，GCD 会 FIFO（先进先出） 地取出来一个，执行一个，然后取下一个，这样一个一个的执行。</span><br><span class="line">并行队列：放到并行队列的任务，GCD 也会 FIFO的取出来，但不同的是，它取出来一个就会放到别的线程，然后再取出来一个又放到另一个的线程。这样由于取的动作很快，忽略不计，看起来，所有的任务都是一起执行的。不过需要注意，GCD 会根据系统资源控制并行的数量，所以如果任务很多，它并不会让所有任务同时执行。</span><br></pre></td></tr></table></figure>
+<p>例子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">[super viewDidLoad];</span><br><span class="line"></span><br><span class="line">NSLog(@<span class="string">"1"</span>);</span><br><span class="line">NSLog(@<span class="string">"-----1------%@"</span>,[NSThread currentThread]);</span><br><span class="line"></span><br><span class="line">dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line"></span><br><span class="line">    NSLog(@<span class="string">"2"</span>);</span><br><span class="line">    NSLog(@<span class="string">"--------2---------%@"</span>,[NSThread currentThread]);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">NSLog(@<span class="string">"3"</span>);</span><br><span class="line">NSLog(@<span class="string">"-----------3------------%@"</span>,[NSThread currentThread]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行结果：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">只会运行</span><br><span class="line">NSLog(@<span class="string">"1"</span>);</span><br><span class="line">NSLog(@<span class="string">"-----1------%@"</span>,[NSThread currentThread]);</span><br><span class="line">异步操作阻塞，不会进行下面的操作</span><br></pre></td></tr></table></figure></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align:right">同步执行</th>
+<th style="text-align:center">异步执行</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>串行队列</td>
+<td style="text-align:right">当前线程，一个一个执行</td>
+<td style="text-align:center">其他线程，一个一个执行</td>
+</tr>
+<tr>
+<td>并行队列</td>
+<td style="text-align:right">当前线程，一个一个执行</td>
+<td style="text-align:center">开很多线程，一起执行</td>
+</tr>
+</tbody>
+</table>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/15/多线程/" data-id="cijfer0l90004wbw5ibgzokca" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/15/多线程/" data-id="cijfgsz4i0004lzw5wxieqbek" class="article-share-link">Share</a>
       
       
     </footer>
