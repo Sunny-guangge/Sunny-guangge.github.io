@@ -15,7 +15,7 @@
 <meta property="og:description" content="学习笔记（持续更新中…）
 1、插入到数组的最前面1NSRange range = NSMakeRange(0, newArray.count);&amp;#10;NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:range];&amp;#10;[array insertObjects:newArray atIndexes:set];
 2、添加pch文">
-<meta property="og:updated_time" content="2016-01-11T10:33:30.000Z">
+<meta property="og:updated_time" content="2016-01-15T07:16:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="学习笔记">
 <meta name="twitter:description" content="学习笔记（持续更新中…）
@@ -139,11 +139,11 @@
 <h1 id="APP在后台的时候可以在这个方法里作操作比如发送数据到服务器_等">APP在后台的时候可以在这个方法里作操作比如发送数据到服务器 等</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^&#123;</span><br><span class="line"></span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
 <h1 id="关于html、CSS、JavaSc的关系">关于html、CSS、JavaSc的关系</h1><h1 id="HTML_定义了网页的内容">HTML 定义了网页的内容</h1><h1 id="CSS_描述了网页的布局">CSS 描述了网页的布局</h1><h1 id="JavaScript_网页的行为">JavaScript 网页的行为</h1><h2 id="通过homebrew（http://brew-sh）安装chisel（https://github-com/facebook/chisel）-_开源调试器chisel-LLDB_插件">通过homebrew（<a href="http://brew.sh）安装chisel（https://github.com/facebook/chisel）-" target="_blank" rel="external">http://brew.sh）安装chisel（https://github.com/facebook/chisel）-</a> 开源调试器chisel-LLDB 插件</h2><h3 id="Homebrew是一款自由及开放源代码的软件包管理系统，用以简化Mac_OS_X系统上的软件安装过程，最初由马克斯·霍威尔（Max_Howell）写成。该包管理器在Ruby_on_Rails社区广为人知，因其可扩展性得到了一致好评[1]。">Homebrew是一款自由及开放源代码的软件包管理系统，用以简化Mac OS X系统上的软件安装过程，最初由马克斯·霍威尔（Max Howell）写成。该包管理器在Ruby on Rails社区广为人知，因其可扩展性得到了一致好评[1]。</h3><p>Homebrew使用GitHub，通过用户的贡献扩大对软件包的支持。2012年，Homebrew是GitHub上拥有最多新贡献者的项目[2]。2013年，Homebrew同时成为GitHub上最多贡献者及最多已关闭问题的项目<br>安装homebrew命令行<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ruby -e <span class="string">"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"</span></span><br></pre></td></tr></table></figure></p>
 <p><a href="http://blog.cnbluebox.com/blog/2015/03/05/chisel/" target="_blank" rel="external">http://blog.cnbluebox.com/blog/2015/03/05/chisel/</a></p>
-
+<h1 id="优化viewController">优化viewController</h1><h3 id="1、将业务逻辑移到Model_model_对象的方法写到model里；">1、将业务逻辑移到Model  model 对象的方法写到model里；</h3><h3 id="2、涉及到model得操作，简历管理类进行统一的管理；">2、涉及到model得操作，简历管理类进行统一的管理；</h3><h3 id="3、网络请求逻辑移到Model层；">3、网络请求逻辑移到Model层；</h3><h3 id="4、对一个整体的view进行封装。">4、对一个整体的view进行封装。</h3>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cije3bbun000318w5tyrlqucq" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cijfer0l70003wbw5dmo9f28a" class="article-share-link">Share</a>
       
       
     </footer>
@@ -215,7 +215,7 @@ ds.charset = 'UTF-8';
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">5</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">5</span></li></ul>
     </div>
   </div>
 
@@ -225,6 +225,10 @@ ds.charset = 'UTF-8';
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/01/15/多线程/">多线程</a>
+          </li>
         
           <li>
             <a href="/2016/01/14/coredata/">coredata</a>
@@ -240,10 +244,6 @@ ds.charset = 'UTF-8';
         
           <li>
             <a href="/2015/12/29/3DTouch/">3DTouch</a>
-          </li>
-        
-          <li>
-            <a href="/2015/12/17/学习笔记/">学习笔记</a>
           </li>
         
       </ul>
