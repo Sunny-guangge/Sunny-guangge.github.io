@@ -223,7 +223,7 @@ return false;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/26/正则表达式/" data-id="cijv76t9j00030mw5d5jw5sc1" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/26/正则表达式/" data-id="cijv9aje30003ipw5q8m8olp9" class="article-share-link">Share</a>
       
       
     </footer>
@@ -286,7 +286,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/18/存储/" data-id="cijv76t9m00050mw5n39uouq8" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/18/存储/" data-id="cijv9aje60005ipw5pwkz5sqg" class="article-share-link">Share</a>
       
       
     </footer>
@@ -367,6 +367,8 @@ ds.charset = 'UTF-8';
 <h2 id="创建队列：">创建队列：</h2><h3 id="主队列：_这是一个特殊的_串行队列。什么是主队列，大家都知道吧，它用于刷新_UI，任何需要刷新_UI_的工作都要在主队列执行，所以一般耗时的任务都要放到别的线程执行。">主队列： 这是一个特殊的 串行队列。什么是主队列，大家都知道吧，它用于刷新 UI，任何需要刷新 UI 的工作都要在主队列执行，所以一般耗时的任务都要放到别的线程执行。</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//OBJECTIVE-C</span><br><span class="line">dispatch_queue_t queue = ispatch_get_main_queue();</span><br><span class="line"></span><br><span class="line">//SWIFT</span><br><span class="line">let queue = ispatch_get_main_queue()</span><br></pre></td></tr></table></figure>
 <h3 id="自己创建的队列">自己创建的队列</h3><p>自己可以创建 串行队列, 也可以创建 并行队列。看下面的代码（代码已更新），它有两个参数，第一个上面已经说了，第二个才是最重要的。<br>第二个参数用来表示创建的队列是串行的还是并行的，传入 DISPATCH_QUEUE_SERIAL 或 NULL 表示创建串行队列。传入 DISPATCH_QUEUE_CONCURRENT 表示创建并行队列。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//OBJECTIVE-C</span><br><span class="line">//串行队列</span><br><span class="line">dispatch_queue_t queue = dispatch_queue_create(<span class="string">"tk.bourne.testQueue"</span>, NULL);</span><br><span class="line">dispatch_queue_t queue = dispatch_queue_create(<span class="string">"tk.bourne.testQueue"</span>, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">//并行队列</span><br><span class="line">dispatch_queue_t queue = dispatch_queue_create(<span class="string">"tk.bourne.testQueue"</span>, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line"></span><br><span class="line">//SWIFT</span><br><span class="line">//串行队列</span><br><span class="line">let queue = dispatch_queue_create(<span class="string">"tk.bourne.testQueue"</span>, nil);</span><br><span class="line">let queue = dispatch_queue_create(<span class="string">"tk.bourne.testQueue"</span>, DISPATCH_QUEUE_SERIAL)</span><br><span class="line">//并行队列</span><br><span class="line">let queue = dispatch_queue_create(<span class="string">"tk.bourne.testQueue"</span>, DISPATCH_QUEUE_CONCURRENT)</span><br></pre></td></tr></table></figure></p>
 <h3 id="全局并行队列_只要是并行任务一般都加入到这个队列。这是系统提供的一个并发队列。">全局并行队列 只要是并行任务一般都加入到这个队列。这是系统提供的一个并发队列。</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//OBJECTIVE-C</span><br><span class="line">dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">//SWIFT</span><br><span class="line">let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="barrier">barrier</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">在前面的任务执行结束后它才执行，而且它后面的任务等它执行完成之后才会执行</span><br><span class="line">不能是全局的并发队列</span><br><span class="line">所有的任务都必须在一个队列中</span><br><span class="line">dispatch_barrier_async(dispatch_queue_t queue, dispatch_block_t block);</span><br></pre></td></tr></table></figure>
+<h3 id="快速迭代">快速迭代</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dispatch_apply(<span class="number">10</span>, dispatch_get_global_queue(<span class="number">0</span>, <span class="number">0</span>), ^(size_t index)&#123;</span><br><span class="line">// 执行<span class="number">10</span>次代码，index顺序不确定</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <h2 id="创建任务">创建任务</h2><h3 id="同步任务：会阻塞当前线程（SYNC）">同步任务：会阻塞当前线程（SYNC）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//OBJECTIVE-C</span><br><span class="line">dispatch_sync(&lt;<span class="comment">#queue#&gt;, ^&#123;</span></span><br><span class="line">   //code here</span><br><span class="line">   NSLog(@<span class="string">"%@"</span>, [NSThread currentThread]);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">//SWIFT</span><br><span class="line">dispatch_sync(&lt;<span class="comment">#queue#&gt;, &#123; () -&gt; Void in</span></span><br><span class="line">    //code here</span><br><span class="line">    println(NSThread.currentThread())</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <h3 id="异步任务：不会阻塞当前线程_(ASYNC)">异步任务：不会阻塞当前线程 (ASYNC)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//OBJECTIVE-C</span><br><span class="line">dispatch_async(&lt;<span class="comment">#queue#&gt;, ^&#123;</span></span><br><span class="line">    //code here</span><br><span class="line">    NSLog(@<span class="string">"%@"</span>, [NSThread currentThread]);</span><br><span class="line">&#125;);</span><br><span class="line">//SWIFT</span><br><span class="line">dispatch_async(&lt;<span class="comment">#queue#&gt;, &#123; () -&gt; Void in</span></span><br><span class="line">    //code here</span><br><span class="line">    println(NSThread.currentThread())</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <hr>
@@ -416,7 +418,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/15/多线程/" data-id="cijv76t9n00060mw5iu5igssi" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/15/多线程/" data-id="cijv9aje80006ipw51owpegc4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -483,7 +485,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/14/coredata/" data-id="cijv76t9x000b0mw59b9pb884" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/14/coredata/" data-id="cijv9ajej000bipw57ihw9ikg" class="article-share-link">Share</a>
       
       
     </footer>
@@ -554,7 +556,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/11/Chisel使用/" data-id="cijv76tad000i0mw5r0bu44o2" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/11/Chisel使用/" data-id="cijv9ajf1000iipw5c5igoukr" class="article-share-link">Share</a>
       
       
     </footer>
@@ -627,7 +629,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/04/iOS应用安全开发，你不知道的那些事/" data-id="cijv76t9p00070mw50k68qvpe" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/04/iOS应用安全开发，你不知道的那些事/" data-id="cijv9aje90007ipw5v42qej6v" class="article-share-link">Share</a>
       
       
     </footer>
@@ -697,7 +699,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/29/3DTouch/" data-id="cijv76t8w00000mw53mr76cf7" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/29/3DTouch/" data-id="cijv9ajde0000ipw55eumxynw" class="article-share-link">Share</a>
       
       
     </footer>
@@ -799,7 +801,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cijv76t9l00040mw5g3meoyev" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cijv9aje50004ipw53eejvpgd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -858,7 +860,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="cijv76t9i00020mw5ua1zulfw" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="cijv9aje10002ipw50eiesntp" class="article-share-link">Share</a>
       
       
     </footer>
@@ -914,7 +916,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="cijv76t9g00010mw5m7vcnwjk" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="cijv9ajdt0001ipw5mwk8hte3" class="article-share-link">Share</a>
       
       
     </footer>
