@@ -65,6 +65,76 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-3DTouch" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/12/29/3DTouch/" class="article-date">
+  <time datetime="2015-12-29T09:28:44.000Z" itemprop="datePublished">2015-12-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/12/29/3DTouch/">3DTouch</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##3Dtouch 的实际应用详解</p>
+<p>3D touch也出了很长时间了，这次花时间好好研究了一下，把经验与大家分享一下</p>
+<h3 id="1-_主界面重按APP图标，弹出Touch菜单">1. 主界面重按APP图标，弹出Touch菜单</h3><p>1.1静态快速选项</p>
+<p>(iOS数组)给APP指定静态主屏幕的快速选项，这个键包含了一个字典数组，每个字典包含关于一个快速选项的详细信息。 你可以指定静态快速选项给你的APP用一个字典数组。</p>
+<p>UIApplicationShortcutItems (iOS数组)给APP指定静态主屏幕的快速选项，这个键包含了一个字典数组，每个字典包含关于一个快速选项的详细信息。 你可以指定静态快速选项给你的APP用一个字典数组。</p>
+<p>静态定义快速在运行时常用的key:</p>
+<p>UIApplicationShortcutItemType (必须使用) 用来区分与其他快速选项的分类</p>
+<p>UIApplicationShortcutItemTitle (必须使用) 快速选项显示的标题</p>
+<p>UIApplicationShortcutItemSubtitle 快速选项显示的子标题</p>
+<p>UIApplicationShortcutItemIconType 图片类型由系统提供（ iOS9.1之后新添加了许多图片类型）<br>UIApplicationShortcutItemIconFile 自定义的图标</p>
+<p>UIApplicationShortcutItemUserInfo 附加信息</p>
+<h3 id="2-_动态快速选项">2. 动态快速选项</h3><p>在AppDelegate中实现以下代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;</span><br><span class="line">    UIApplicationShortcutItem * item = [[UIApplicationShortcutItem alloc]initWithType:@<span class="string">"two"</span> localizedTitle:@<span class="string">"搜索楼盘"</span> localizedSubtitle:@<span class="string">"一步到达指定楼盘"</span> icon:[UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypeSearch] userInfo:nil];</span><br><span class="line">    UIApplicationShortcutItem * item1 = [[UIApplicationShortcutItem alloc]initWithType:@<span class="string">"three"</span> localizedTitle:@<span class="string">"附近楼盘"</span> localizedSubtitle:@<span class="string">"快来领路费吧"</span> icon:[UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypeMarkLocation] userInfo:nil];</span><br><span class="line">    [UIApplication sharedApplication].shortcutItems = @[item,item1];</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-选择item后触发的方法">3.选择item后触发的方法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">- (void)application:(UIApplication *)application performActionForShortcutItem:(nonnull UIApplicationShortcutItem *)shortcutItem completionHandler:(nonnull void (^)(BOOL))completionHandler&#123;</span><br><span class="line">　　//通过shortcutItem.type来判断点击的是哪一个item，来进行不同的操作</span><br><span class="line">    <span class="keyword">if</span> ([shortcutItem.type isEqualToString:@<span class="string">"one"</span>]) &#123;</span><br><span class="line">         UITabBarController *mytab = (UITabBarController*)self.window.rootViewController;</span><br><span class="line">        mytab.selectedIndex = <span class="number">0</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> ([shortcutItem.type isEqualToString:@<span class="string">"two"</span>])&#123;</span><br><span class="line">        SearchVC *searchVC = [[SearchVC alloc]init];</span><br><span class="line">        UITabBarController *mytab = (UITabBarController*)self.window.rootViewController;</span><br><span class="line">        UINavigationController *myNAV = [mytab.viewControllers firstObject];</span><br><span class="line">        [myNAV pushViewController:searchVC animated:YES];</span><br><span class="line">      //  [self.window.rootViewController presentViewController:searchVC animated:YES completion:nil];</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        FPHNearbyVC *vc = [[FPHNearbyVC alloc] init];</span><br><span class="line">        UITabBarController *mytab = (UITabBarController*)self.window.rootViewController;</span><br><span class="line">        UINavigationController *myNAV = [mytab.viewControllers firstObject];</span><br><span class="line">        vc.hidesBottomBarWhenPushed = YES;</span><br><span class="line">        [myNAV pushViewController:vc animated:YES];</span><br><span class="line">    &#125;</span><br><span class="line">    completionHandler(YES);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-APP内部peek和pop的使用（以tableView中的使用为例）">4.APP内部peek和pop的使用（以tableView中的使用为例）</h3><p>首先遵守协议UIViewControllerPreviewingDelegate</p>
+<h3 id="4-1_检测是否有3Dtouch；">4.1 检测是否有3Dtouch；</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (void)check3DTouch&#123;</span><br><span class="line">    <span class="keyword">if</span> (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable)</span><br><span class="line">    &#123;</span><br><span class="line">        NSLog(@<span class="string">"3D Touch 开启"</span>);</span><br><span class="line">        </span><br><span class="line">       &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">            </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-2_下面来实现相应的代理方法">4.2 下面来实现相应的代理方法</h3><p>//peek的代理方法，轻按即可触发弹出vc<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> - (UIViewController *)previewingContext:(id &lt;UIViewControllerPreviewing&gt;)previewingContext viewControllerForLocation:(CGPoint)location&#123;</span><br><span class="line">      NSIndexPath *indexPath = [_tableView indexPathForCell:(UITableViewCell* )[previewingContext sourceView]];</span><br><span class="line">　　　　//通过[previewingContext sourceView]拿到对应的cell；　　</span><br><span class="line">     NewVC *vc = [[FPHNewHouseDetailVC alloc] init];</span><br><span class="line">     newModel *model= [_tableView objectAtIndex:indexPath.row];</span><br><span class="line">     vc.pid = house.id;</span><br><span class="line">   </span><br><span class="line">     NSLog(@<span class="string">"%@"</span>,location);</span><br><span class="line">     <span class="keyword">return</span> vc;</span><br><span class="line"> &#125;</span><br><span class="line">//pop的代理方法，在此处可对将要进入的vc进行处理，比如隐藏tabBar；</span><br><span class="line"> - (void)previewingContext:(id &lt;UIViewControllerPreviewing&gt;)previewingContext commitViewController:(UIViewController *)viewControllerToCommit</span><br><span class="line"> &#123;</span><br><span class="line">     viewControllerToCommit.hidesBottomBarWhenPushed = YES;</span><br><span class="line">     [self showViewController:viewControllerToCommit sender:self];</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">注意 ： tableView在</span><br><span class="line"></span><br><span class="line">- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath</span><br><span class="line"></span><br><span class="line">方法中一定要对每个cell进行注册代理方法如下</span><br><span class="line"></span><br><span class="line">[self registerForPreviewingWithDelegate:self sourceView:cell];</span><br></pre></td></tr></table></figure>
+<h3 id="5-预览时底部菜单的添加">5.预览时底部菜单的添加</h3><p>在要预览的VC中添加以下代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">-(NSArray&lt;id&lt;UIPreviewActionItem&gt;&gt; *)previewActionItems</span><br><span class="line">&#123;</span><br><span class="line">    UIPreviewAction * action1 = [UIPreviewAction actionWithTitle:@<span class="string">"标题1"</span> style:<span class="number">1</span> handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) &#123;</span><br><span class="line">        NSLog(@<span class="string">"标题1"</span>);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    UIPreviewAction * action2 = [UIPreviewAction actionWithTitle:@<span class="string">"标题2"</span> style:<span class="number">0</span> handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) &#123;</span><br><span class="line">      NSLog(@<span class="string">"标题2"</span>);</span><br><span class="line">        </span><br><span class="line">    &#125;];</span><br><span class="line">    UIPreviewAction * action3 = [UIPreviewAction actionWithTitle:@<span class="string">"标题3"</span> style:<span class="number">2</span> handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) &#123;</span><br><span class="line">        NSLog(@<span class="string">"标题3"</span>);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    NSArray * actions = @[action1,action2,action3];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> actions;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>block里面直接写点击后要实现的操作</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sunny-guangge.github.io/2015/12/29/3DTouch/" data-id="cim323e7l0000bnfyg2hv2d2y" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="post-3DTouch" data-title="undefined" data-url="http://sunny-guangge.github.io/2015/12/29/3DTouch/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"sunny-guangge"};
+(function() {
+var ds = document.createElement('script');
+ds.type = 'text/javascript';ds.async = true;
+ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+ds.charset = 'UTF-8';
+(document.getElementsByTagName('head')[0]
+|| document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+<!-- 多说公共JS代码 end -->
+  
     <article id="post-学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/12/17/学习笔记/" class="article-date">
@@ -226,7 +296,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cilrdaoh10004v1fyjo4hdp3z" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cim323e880005bnfy6a05at4g" class="article-share-link">Share</a>
       
       
     </footer>
@@ -285,7 +355,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="cilrdaogx0002v1fyoyrannv9" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="cim323e830002bnfy8s39mhzm" class="article-share-link">Share</a>
       
       
     </footer>
@@ -348,7 +418,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="cilrdaogv0001v1fy0vizog8m" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="cim323e7x0001bnfyo6izmfat" class="article-share-link">Share</a>
       
       
     </footer>
@@ -424,7 +494,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="cilrdaohe000cv1fyql1edvig" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="cim323e8s000dbnfyt1hatbys" class="article-share-link">Share</a>
       
       
     </footer>
@@ -484,7 +554,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="cilrdaohj000fv1fy9axysxk2" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="cim323e8y000gbnfybkv7kbmw" class="article-share-link">Share</a>
       
       
     </footer>
@@ -541,7 +611,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/" data-id="cilrdaohv000jv1fyj3gh4jo7" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/" data-id="cim323e9i000kbnfyjsymqiyx" class="article-share-link">Share</a>
       
       
     </footer>
@@ -602,7 +672,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="cilrdaohh000ev1fybj5plj3v" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="cim323e8w000fbnfykof6fp2r" class="article-share-link">Share</a>
       
       
     </footer>
@@ -667,7 +737,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="cilrdaohb000av1fy88cpoo4z" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="cim323e8o000bbnfycz8jdngi" class="article-share-link">Share</a>
       
       
     </footer>
@@ -800,7 +870,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/10/Markdown语法/" data-id="cilrdaohl000gv1fy5jixv6gh" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/10/Markdown语法/" data-id="cim323e8z000hbnfyjxvo51gx" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Markdown/">Markdown</a></li></ul>
@@ -860,7 +930,7 @@ ds.charset = 'UTF-8';
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -872,7 +942,11 @@ ds.charset = 'UTF-8';
       <ul>
         
           <li>
-            <a href="/2016/03/10/hello-world/">Hello World</a>
+            <a href="/2016/03/22/常用的宏/">常用的宏</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/14/hello-world/">Hello World</a>
           </li>
         
           <li>
@@ -885,10 +959,6 @@ ds.charset = 'UTF-8';
         
           <li>
             <a href="/2016/01/26/正则表达式/">正则表达式</a>
-          </li>
-        
-          <li>
-            <a href="/2016/01/18/存储/">存储</a>
           </li>
         
       </ul>

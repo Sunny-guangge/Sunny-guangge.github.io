@@ -3,27 +3,33 @@
 <head>
   <meta charset="utf-8">
   
-  <title>block | sunny</title>
+  <title>常用的宏 | sunny</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="How Do I Declare A Block in Objective-C?
-As a local variable:
-returnType (^blockName)(parameterTypes) =  ^returnType(parameters) {…};As a property:
-@property (nonatomic, copy) returnType (^blockName)(">
+  <meta name="description" content="//获取屏幕 宽度、高度
+#define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
+#define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
+//DEBUG  模式下打印日志,当前行
+#ifdef DEBUG
+#define NSLog(format, …)">
 <meta property="og:type" content="article">
-<meta property="og:title" content="block">
-<meta property="og:url" content="http://sunny-guangge.github.io/2015/11/19/block/index.html">
+<meta property="og:title" content="常用的宏">
+<meta property="og:url" content="http://sunny-guangge.github.io/2016/03/22/常用的宏/index.html">
 <meta property="og:site_name" content="sunny">
-<meta property="og:description" content="How Do I Declare A Block in Objective-C?
-As a local variable:
-returnType (^blockName)(parameterTypes) =  ^returnType(parameters) {…};As a property:
-@property (nonatomic, copy) returnType (^blockName)(">
-<meta property="og:updated_time" content="2016-03-14T02:46:35.000Z">
+<meta property="og:description" content="//获取屏幕 宽度、高度
+#define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
+#define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
+//DEBUG  模式下打印日志,当前行
+#ifdef DEBUG
+#define NSLog(format, …)">
+<meta property="og:updated_time" content="2016-03-22T06:44:29.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="block">
-<meta name="twitter:description" content="How Do I Declare A Block in Objective-C?
-As a local variable:
-returnType (^blockName)(parameterTypes) =  ^returnType(parameters) {…};As a property:
-@property (nonatomic, copy) returnType (^blockName)(">
+<meta name="twitter:title" content="常用的宏">
+<meta name="twitter:description" content="//获取屏幕 宽度、高度
+#define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
+#define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
+//DEBUG  模式下打印日志,当前行
+#ifdef DEBUG
+#define NSLog(format, …)">
   
     <link rel="alternative" href="/atom.xml" title="sunny" type="application/atom+xml">
   
@@ -73,10 +79,10 @@ returnType (^blockName)(parameterTypes) =  ^returnType(parameters) {…};As a pr
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-block" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-常用的宏" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/11/19/block/" class="article-date">
-  <time datetime="2015-11-19T04:30:04.000Z" itemprop="datePublished">2015-11-19</time>
+    <a href="/2016/03/22/常用的宏/" class="article-date">
+  <time datetime="2016-03-22T06:43:55.000Z" itemprop="datePublished">2016-03-22</time>
 </a>
     
   </div>
@@ -87,7 +93,7 @@ returnType (^blockName)(parameterTypes) =  ^returnType(parameters) {…};As a pr
         
   
     <h1 class="article-title" itemprop="name">
-      block
+      常用的宏
     </h1>
   
 
@@ -95,21 +101,55 @@ returnType (^blockName)(parameterTypes) =  ^returnType(parameters) {…};As a pr
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>How Do I Declare A Block in Objective-C?</p>
-<p>As a local variable:</p>
-<p>returnType (^blockName)(parameterTypes) =  ^returnType(parameters) {…};<br>As a property:</p>
-<p>@property (nonatomic, copy) returnType (^blockName)(parameterTypes);<br>As a method parameter:</p>
-<ul>
-<li>(void)someMethodThatTakesABlock:(returnType(^)(parameterTypes))blockName;<br>As an argument to a method call:</li>
-</ul>
-<p>[someObject someMethodThatTakesABlock:^returnType (parameters) {…}];<br>As a typedef:</p>
-<p>typedef returnType (^TypeName)(parameterTypes);<br>TypeName blockName = ^returnType(parameters) {…};<br>This site is not intended to be an exhaustive list of all possible uses of blocks.<br>If you find yourself needing syntax not listed here, it is likely that a typedef would make your code more readable.</p>
-<p>Unable to access this site due to the profanity in the URL? (<a href="http://goshdarnblocksyntax.com" target="_blank" rel="external">http://goshdarnblocksyntax.com</a>) is a more work-friendly mirror.</p>
+        <p>//获取屏幕 宽度、高度</p>
+<p>#define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)</p>
+<p>#define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)</p>
+<p>//DEBUG  模式下打印日志,当前行</p>
+<p>#ifdef DEBUG</p>
+<p>#define NSLog(format, …) do {                                                             \<br>fprintf(stderr, “&lt;%s : %d&gt; %s\n”,                                           \<br>[[[NSString stringWithUTF8String:<strong>FILE</strong>] lastPathComponent] UTF8String],  \<br><strong>LINE</strong>, <strong>func</strong>);                                                        \<br>(NSLog)((format), ##<strong>VA_ARGS</strong>);                                           \<br>fprintf(stderr, “——-\n”);                                               \<br>} while (0)</p>
+<p>#else</p>
+<p>#define NSLog(…)</p>
+<p>#endif<br>//判断是否 Retina屏、设备是否%fhone 5、是否是iPad</p>
+<p>#define isRetina ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)</p>
+<p>#define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)</p>
+<p>#define isPad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)</p>
+<p>//获取系统版本</p>
+<p>#define IOS_VERSION [[[UIDevice currentDevice] systemVersion] floatValue]</p>
+<p>#define CurrentSystemVersion [[UIDevice currentDevice] systemVersion]</p>
+<p>//判断是真机还是模拟器</p>
+<p>#if TARGET_OS_IPHONE<br>//iPhone Device</p>
+<p>#endif</p>
+<p>#if TARGET_IPHONE_SIMULATOR<br>//iPhone Simulator</p>
+<p>#endif</p>
+<p>//检查系统版本</p>
+<p>#define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)</p>
+<p>#define SYSTEM_VERSION_GREATER_THAN(v)              ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)</p>
+<p>#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)</p>
+<p>#define SYSTEM_VERSION_LESS_THAN(v)                 ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)</p>
+<p>#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)     ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)</p>
+<p>//读取本地图片</p>
+<p>#define LOADIMAGE(file,ext) [UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:file ofType:ext]]</p>
+<p>//定义UIImage对象</p>
+<p>#define IMAGE(imageName) [UIImage imageNamed:[NSString stringWithFormat:@”%@”,imageName]]</p>
+<p>// rgb颜色转换（16进制-&gt;10进制）</p>
+<p>#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue &amp; 0xFF0000) &gt;&gt; 16))/255.0 green:((float)((rgbValue &amp; 0xFF00) &gt;&gt; 8))/255.0 blue:((float)(rgbValue &amp; 0xFF))/255.0 alpha:1.0]</p>
+<p>// 获取RGB颜色</p>
+<p>#define RGBA(r,g,b,a) [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:a]</p>
+<p>#define RGB(r,g,b) RGBA(r,g,b,1.0f)</p>
+<p>// 获取屏幕大小</p>
+<p>#define kDeviceWidth [UIScreen mainScreen].bounds.size.width</p>
+<p>#define KDeviceHeight [UIScreen mainScreen].bounds.size.height</p>
+<p>#define IS_IOS7 (([[[UIDevice currentDevice] systemVersion] floatValue] &gt;= 7.0)? (YES):(NO))</p>
+<p>#define IS_IOS6 (([[[UIDevice currentDevice] systemVersion] floatValue] &gt;= 6.0)? (YES):(NO))</p>
+<p>#define IS_4INCH ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)</p>
+<p>//释放内存</p>
+<p>#define RELEASE_SAFE(_Pointer) do{[_Pointer release],_Pointer = nil;}while(0)</p>
+<p>#endif</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="cim323e8w000fbnfykof6fp2r" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/03/22/常用的宏/" data-id="cim323e870004bnfyx4v7zzd4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -118,19 +158,10 @@ returnType (^blockName)(parameterTypes) =  ^returnType(parameters) {…};As a pr
     
 <nav id="article-nav">
   
-    <a href="/2015/11/19/Core-Animation-总结/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Core Animation 总结
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/11/11/hexo创建个人博客总结/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/03/14/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">hexo创建个人博客总结</div>
+      <div class="article-nav-title">Hello World</div>
     </a>
   
 </nav>
@@ -139,7 +170,7 @@ returnType (^blockName)(parameterTypes) =  ^returnType(parameters) {…};As a pr
 </article>
 
 <!-- 多说评论框 start -->
-<div class="ds-thread" data-thread-key="post-block" data-title="block" data-url="http://sunny-guangge.github.io/2015/11/19/block/"></div>
+<div class="ds-thread" data-thread-key="post-常用的宏" data-title="常用的宏" data-url="http://sunny-guangge.github.io/2016/03/22/常用的宏/"></div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
