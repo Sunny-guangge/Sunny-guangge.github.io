@@ -131,11 +131,51 @@
 <p>//释放内存</p>
 <p>#define RELEASE_SAFE(_Pointer) do{[_Pointer release],_Pointer = nil;}while(0)</p>
 <p>#endif</p>
+<p>//方正黑体简体字体定义</p>
+<p>#define FONT(F) [UIFont fontWithName:@”FZHTJW–GB1-0” size:F]</p>
+<p>//定义一个API</p>
+<p>#define APIURL                @”<a href="http://xxxxx/" target="_blank" rel="external">http://xxxxx/</a>“<br>//登录API</p>
+<p>#define APILogin              [APIURL stringByAppendingString:@”Login”]</p>
+<p>//设置View的tag属性</p>
+<p>#define VIEWWITHTAG(_OBJECT, _TAG)    [_OBJECT viewWithTag : _TAG]<br>//程序的本地化,引用国际化的文件</p>
+<p>#define MyLocal(x, …) NSLocalizedString(x, nil)</p>
+<p>//G－C－D</p>
+<p>#define BACK(block) dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), block)</p>
+<p>#define MAIN(block) dispatch_async(dispatch_get_main_queue(),block)</p>
+<p>//NSUserDefaults 实例化</p>
+<p>#define USER_DEFAULT [NSUserDefaults standardUserDefaults]</p>
+<p>//由角度获取弧度 有弧度获取角度</p>
+<p>#define degreesToRadian(x) (M_PI * (x) / 180.0)</p>
+<p>#define radianToDegrees(radian) (radian*180.0)/(M_PI)</p>
+<p>//单例化一个类</p>
+<p>#define SYNTHESIZE_SINGLETON_FOR_CLASS(classname) \<br>\<br>static classname *shared##classname = nil; \<br>\</p>
+<ul>
+<li>(classname *)shared##classname \<br>{ \<br>@synchronized(self) \<br>{ \<br>if (shared##classname == nil) \<br>{ \<br>shared##classname = ［self alloc] init]; \<br>} \<br>} \<br>\<br>return shared##classname; \<br>} \<br>\</li>
+<li>(id)allocWithZone:(NSZone *)zone \<br>{ \<br>@synchronized(self) \<br>{ \<br>if (shared##classname == nil) \<br>{ \<br>shared##classname = [super allocWithZone:zone]; \<br>return shared##classname; \<br>} \<br>} \<br>\<br>return nil; \<br>} \<br>\</li>
+</ul>
+<ul>
+<li>(id)copyWithZone:(NSZone *)zone \<br>{ \<br>return self; \<br>}</li>
+</ul>
+<p>#endif</p>
+<p>//——————-打印日志————————-<br>//DEBUG  模式下打印日志,当前行</p>
+<p>#ifdef DEBUG</p>
+<h1 id="define_DLog(fmt,_…)_NSLog((@”%s_[Line_%d]_“_fmt),_PRETTY_FUNCTION,_LINE,_##VA_ARGS);">define DLog(fmt, …) NSLog((@”%s [Line %d] “ fmt), <strong>PRETTY_FUNCTION</strong>, <strong>LINE</strong>, ##<strong>VA_ARGS</strong>);</h1><p>#else</p>
+<h1 id="define_DLog(…)">define DLog(…)</h1><p>#endif</p>
+<p>//重写NSLog,Debug模式下打印日志和当前行数</p>
+<p>#if DEBUG</p>
+<p>#define NSLog(FORMAT, …) fprintf(stderr,”\nfunction:%s line:%d content:%s\n”, <strong>FUNCTION</strong>, <strong>LINE</strong>, ［NSString stringWithFormat:FORMAT, ##<strong>VA_ARGS</strong>] UTF8String]);</p>
+<p>#else</p>
+<p>#define NSLog(FORMAT, …) nil</p>
+<p>#endif</p>
+<p>//DEBUG  模式下打印日志,当前行 并弹出一个警告</p>
+<p>#ifdef DEBUG</p>
+<h1 id="define_ULog(fmt,_…)_{_UIAlertView_*alert_=_［UIAlertView_alloc]_initWithTitle:[NSString_stringWithFormat:@”%s\n_[Line_%d]_“,_PRETTY_FUNCTION,_LINE]_message:[NSString_stringWithFormat:fmt,_##VA_ARGS]_delegate:nil_cancelButtonTitle:@”Ok”_otherButtonTitles:nil];_[alert_show];_}">define ULog(fmt, …)  { UIAlertView *alert = ［UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@”%s\n [Line %d] “, <strong>PRETTY_FUNCTION</strong>, <strong>LINE</strong>] message:[NSString stringWithFormat:fmt, ##<strong>VA_ARGS</strong>]  delegate:nil cancelButtonTitle:@”Ok” otherButtonTitles:nil]; [alert show]; }</h1><p>#else</p>
+<h1 id="define_ULog(…)">define ULog(…)</h1><p>#endif</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/03/22/常用的宏/" data-id="cim323e870004bnfyx4v7zzd4" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/03/22/常用的宏/" data-id="cim328zul0004d7fyzi1l7kw3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -195,7 +235,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/03/14/hello-world/" data-id="cim323e8q000cbnfya4ffxw0e" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/03/14/hello-world/" data-id="cim328zuy000cd7fynpc7pfc0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -247,7 +287,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/02/29/tool/" data-id="cim323e8d0008bnfygy89ly4d" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/02/29/tool/" data-id="cim328zur0008d7fy2ifdy4eu" class="article-share-link">Share</a>
       
       
     </footer>
@@ -298,7 +338,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/02/29/html/" data-id="cim323e8m000abnfyls7ls1di" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/02/29/html/" data-id="cim328zuv000ad7fy4fjtwa5y" class="article-share-link">Share</a>
       
       
     </footer>
@@ -481,7 +521,7 @@ return false;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/26/正则表达式/" data-id="cim323e850003bnfyjiet0kp8" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/26/正则表达式/" data-id="cim328zuk0003d7fy694k22r6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -544,7 +584,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/18/存储/" data-id="cim323e8a0006bnfyi6b3ki1u" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/18/存储/" data-id="cim328zuo0006d7fyx3z0qibr" class="article-share-link">Share</a>
       
       
     </footer>
@@ -684,7 +724,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/15/多线程/" data-id="cim323e8c0007bnfyqphpamac" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/15/多线程/" data-id="cim328zup0007d7fysrypfe79" class="article-share-link">Share</a>
       
       
     </footer>
@@ -751,7 +791,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/14/coredata/" data-id="cim323e8u000ebnfyv462w5b5" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/14/coredata/" data-id="cim328zv1000ed7fy1jddcz6d" class="article-share-link">Share</a>
       
       
     </footer>
@@ -822,7 +862,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/11/Chisel使用/" data-id="cim323e9k000lbnfyi1sfyo8y" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/11/Chisel使用/" data-id="cim328zvi000ld7fysrudu63s" class="article-share-link">Share</a>
       
       
     </footer>
@@ -895,7 +935,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/04/iOS应用安全开发，你不知道的那些事/" data-id="cim323e8f0009bnfy42aj77wn" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/04/iOS应用安全开发，你不知道的那些事/" data-id="cim328zus0009d7fyo7yry60s" class="article-share-link">Share</a>
       
       
     </footer>
