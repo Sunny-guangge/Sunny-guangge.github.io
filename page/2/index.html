@@ -65,6 +65,79 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-iOS应用安全开发，你不知道的那些事" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/04/iOS应用安全开发，你不知道的那些事/" class="article-date">
+  <time datetime="2016-01-04T02:31:52.000Z" itemprop="datePublished">2016-01-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/04/iOS应用安全开发，你不知道的那些事/">iOS应用安全开发，你不知道的那些事</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="iOS应用由于其直接运行在手机上，相比运行在服务器的后台服务，更有可能被黑客攻击。本文将从网络安全、本地文件和数据安全、源代码安全三个方面，阐述iOS应用在安全性上遇到的挑战。">iOS应用由于其直接运行在手机上，相比运行在服务器的后台服务，更有可能被黑客攻击。本文将从网络安全、本地文件和数据安全、源代码安全三个方面，阐述iOS应用在安全性上遇到的挑战。</h3><p>联网领域，安全已然是一个老生常谈的话题。许多大公司都设置有专门的安全部门，用于检测自己产品的安全性。但即便是这样，业界仍然时常爆出许多安全问题引发的新闻。就在不久前，乌云曝光了携程网在支付过程中，为了调试方便，记录了用户的信用卡卡号和CVV码等信息，而调试接口可以被外网访问，这样造成黑客可能通过调试接口读取用户的信用卡信息。虽然最终没有造成实际上的用户损失，但此次事件再一次给互联网公司敲响了安全的警钟。</p>
+<p>除了国内，国外的互联网安全问题同样让人担忧。2013年由于曝出Apache Struts2的漏洞，苹果公司多次重置开发者的密码，并且最终为了用户数据的安全，将整个开发者后台全部停止服务，花了2周多时间将后台有潜在问题的功能重写后，才重新开放服务。而4月份刚刚曝光的OpenSSL的漏洞，则让全球三分之二的网站受到影响。在移动互联网快速发展的今天，iOS应用由于直接运行在用户的手机上，相比运行在服务器的后台服务，更有可能被黑客攻击。本文接下来将从三个方面概述iOS移动应用在安全方面所面临的挑战以及应对措施。</p>
+<h2 id="网络安全">网络安全</h2><h3 id="1-_安全地传输用户密码">1. 安全地传输用户密码</h3><p>大部分的iOS应用都需要连网，通过和服务器端进行通信，获得最新的信息并且将内容展现给用户。由于网络传输过程中有可能经过不安全的中间节点，所以我们应该对敏感数据加密，用于保证用户信息的安全。黑客可以在受害者的手机上设置网络通信的代理服务器，从而截获所有的网络请求。即使是HTTPS的加密通信，黑客也可以通过中间人攻击（Man-In-The-Middle Attack，指的是攻击者与通信的两端分别创建独立的联系，并交换其所收到的数据，使通信的两端认为他们正在通过一个私密的连接与对方直接对话，但事实上，整个会话都被攻击者完全控制）来截取通信内容。</p>
+<p>黑客可以在Mac下使用Charles软件（如果在Windows下，可以使用Fiddler软件）来将自己的电脑设置成代理服务器，从而截取应用的网络请求，分析目标应用在通信协议上是否有安全问题。为了测试，我选取了在国内最大的两家租车公司（神州租车和一嗨租车）的iOS应用。</p>
+<h2 id="从图1可以看到，神州租车和一嗨租车在用户登录时，均采用明文的方式，将密码直接发送给服务器。其中一嗨租车不但采用明文方式发送密码，而且在发送时使用了Http_Get的方式，而GET的URL数据一般都会保存在服务器的Access_Log中，所以黑客一旦攻破服务器，只需要扫描Acesss_Log，则可以轻易获得所有用户的明文密码（在本文发表前，一嗨租车已修改了登录协议，采用了POST的方式来登录，但仍然传递的是明文密码）。">从图1可以看到，神州租车和一嗨租车在用户登录时，均采用明文的方式，将密码直接发送给服务器。其中一嗨租车不但采用明文方式发送密码，而且在发送时使用了Http Get的方式，而GET的URL数据一般都会保存在服务器的Access Log中，所以黑客一旦攻破服务器，只需要扫描Acesss Log，则可以轻易获得所有用户的明文密码（在本文发表前，一嗨租车已修改了登录协议，采用了POST的方式来登录，但仍然传递的是明文密码）。</h2><p>如果每一个移动应用都像以上两种应用那样，明文传输用户密码，那么我们可以想象这样一个场景：黑客在咖啡馆或机场等一些公共场所，将自己的电脑设置成与该场所一样名字的免费Wi-Fi，受害者只要不小心使用了该Wi-Fi，则可能泄漏自己的明文密码。对于大多数普通人来说，他们会使用一样的密码登录他的所有的账号，这就意味着他的其他账号：例如淘宝或网上银行账号也有被盗的风险。</p>
+<p>正确的做法应该是这样：事先生成一对用于加密的公私钥，客户端在登录时，使用公钥将用户的密码加密后，将密文传输到服务器。服务器使用私钥将密码解密，然后加盐（Salt，在密码学中是指，通过在密码任意固定位置插入特定的字符串，让散列后的结果和使用原始密码的散列结果不相符，这个过程称之为“加盐”），之后再多次求MD5，然后再和服务器原来存储的用同样方法处理过的密码匹配，如果一致，则登录成功。这样的做法，保证黑客即使截获了加密后的密文，由于没有私钥，也无法还原出原始的密码。而服务器即使被黑客攻陷，黑客除了暴力尝试，也无法从加盐和多次MD5后的密码中还原出原始的密码。这样就保证了用户密码的安全。</p>
+<h3 id="2-_防止通信协议被轻易破解">2. 防止通信协议被轻易破解</h3><p>除了上面提到的明文传输密码的问题外，移动端应用还要面对黑客对于通信协议的破解的威胁。</p>
+<p>在成功破解了通信协议后，黑客可以模拟客户端登录，进而伪造一些用户行为，可能对用户数据造成危害。例如腾讯出品的消除游戏《天天爱消除》，在淘宝上就有很多售价仅为1元的代练服务，如果真正是人工代练，是不可能卖这么便宜的，只有可能是该游戏的通信协议被破解，黑客制作出了代练的机器人程序。通信协议被破解除了对于移动端游戏有严重危害外，对于应用也有很大的危害。例如针对微信，黑客可以制作一些僵尸账号，通过向微信公共账号后台发送垃圾广告，达到赢利的目的。而iPhone设备上的iMessage通信协议居然也被破解了，所以很多iPhone用户会收到来自iMessage的垃圾广告。</p>
+<p>对于以上提到的问题，开发者可以选择类似ProtoBuf（Google提供的一个开源数据交换格式，其最大的特点是基于二进制，因此比传统的JSON格式要短小得多）之类的二进制通信协议或自己实现通信协议，对于传输的内容进行一定程度的加密，以增加黑客破解协议的难度。图2是我截取的淘宝客户端的通信数据，可以看到其中的值都不能直观地猜出内容，所以这对于通信协议是有一定的保护作用。</p>
+<h3 id="3-_验证应用内支付的凭证">3. 验证应用内支付的凭证</h3><p>iOS应用内支付（IAP）是众多应用赢利的方式，通过先让用户免费试用或试玩，然后提供应用内支付来为愿意付费的用户提供更强大的功能，这种模式特别适合不习惯一开始就掏钱的中国用户。但由于国内越狱用户的比例比较大，所以我们也需要注意应用内支付环节中的安全问题。简单来说，越狱后的手机由于没有沙盒作为保护，黑客可以对系统进行任意地修改，所以在支付过程中，苹果返回的已付款成功的凭证可能是伪造的。客户端拿到付款凭证之后，还需要将凭证上传到自己的服务器上，进行二次验证，以保证凭证的真实性。</p>
+<p>另外，我们发现越狱用户的手机上，很可能被黑客用中间人攻击技术来劫持支付凭证。这对于黑客有什么好处呢？因为苹果为了保护用户的隐私，支付凭证中并不包含任何用户的账号信息，所以我们的应用和服务器无法知道这个凭证是谁买的，而只能知道这个凭证是真的还是假的。所以在验证凭证时，哪个账号发起了验证请求，我们就默认这个凭证是该账号拥有的。如果黑客将凭证截获，就可以伪装成真实用户来验证凭证或者转手出售获利。</p>
+<p>打个比方，这就类似于很多商场的购物卡一样，由于是不记名的，黑客如果将你买的购物卡偷窃然后去刷卡购物，商场是无法简单地区分出来的。因此，对于应用内支付，开发者除了需要仔细地验证购买凭证外，也需要告知用户在越狱手机上进行支付的风险。</p>
+<h2 id="本地文件和数据安全">本地文件和数据安全</h2><h3 id="1-_程序文件的安全">1. 程序文件的安全</h3><p>iOS应用的大部分逻辑都是在编译后的二进制文件中，但由于近年来混合式（Hybrid）编程方式的兴起，很多应用的部分功能也采用内嵌Web浏览器的方式来实现。例如腾讯QQ iOS客户端的内部，就有部分逻辑是用Web方式实现的。由于iOS安装文件其实就是一个zip包，所以我们可以通过解压，看到包内的内容。以下是我解开腾讯QQ客户端，看到的其qqapi.js文件的内容。</p>
+<p>可以看到，这些文件都有着完整清晰的注释。通过分析这些JavaScript文件，黑客可以很轻松地知道其调用逻辑。在越狱手机上，还可以修改这些JavaScript代码，达到攻击的目的。</p>
+<p>我也曾尝试查看支付宝客户端中的彩票功能，通过分析，也可以找到其完整的、带着清晰注释的JavaScript代码，如图3所示（支付宝现在已对相应代码进行了加密）。</p>
+<p>通过将JavaScript源码进行混淆和加密，可以防止黑客轻易地阅读和篡改相关的逻辑，也可以防止自己的Web端与Native端的通信协议泄漏。</p>
+<h2 id="本地数据安全">本地数据安全</h2><p>iOS应用的数据在本地通常保存在本地文件或本地数据库中。如果对本地的数据不进行加密处理，很可能被黑客篡改。比如一款名为《LepsWorld 3》的游戏，打开它的本地文件，可以很容易地找到，它使用了一个名为ItempLifes的变量保存生命数值（如图4所示）。于是我们可以简单修改该值，达到修改游戏参数的目的。而在淘宝上，也可以找到许多以此挣钱的商家。对于本地的重要数据，我们应该加密存储或将其保存到keychain中，以保证其不被篡改。</p>
+<h2 id="源代码安全">源代码安全</h2><p>通过file、class-dump、theos、otool等工具，黑客可以分析编译之后的二进制程序文件，不过相对于这些工具来说，IDA的威胁最大。IDA是一个收费的反汇编工具，对于Objective-C代码，它常常可以反汇编到可以方便阅读的程度，这对于程序的安全性，也是一个很大的危害。因为通过阅读源码，黑客可以更加方便地分析出应用的通信协议和数据加密方式。</p>
+<p>下面分别示例了一段代码的原始内容和通过IDA反汇编之后的结果。可以看到，IDA几乎还原了原本的逻辑，而且可读性也非常高。</p>
+<p>反汇编的代码被获得后，由于软件内部逻辑相比汇编代码来说可读性高了很多。黑客可以用来制作软件的注册机，也可以更加方便地破解网络通信协议，从而制作出机器人（“僵尸”）账号。最极端的情况下，黑客可以将反汇编的代码稍加修改，植入木马，然后重新打包发布在一些越狱渠道上，这将对用户产生巨大的危害。</p>
+<p>对于IDA这类工具，我们的应对措施就比较少了。除了可以用一些宏来简单混淆类名外，也可以将关键的逻辑用纯C语言来实现。例如微信的iOS端的通信底层，就是用C语言实现的。这样的方式除了能保证通信协议的安全外，也可以在iOS和Android等多个平台使用同一套底层通信代码，达到复用的目的。</p>
+<h2 id="总结">总结</h2><p>由于移动互联网的快速发展，人们的购物、理财等需求也在移动端出现，这使得移动应用的安全性越来越重要。由于部署在用户终端上，移动应用比服务器应用更容易被攻击，大家也需要在移动应用的网络通信、本地文件和数据、源代码三方面做好防范，只有这样才能保证应用的安全。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://sunny-guangge.github.io/2016/01/04/iOS应用安全开发，你不知道的那些事/" data-id="cinv5l680000a8afyxj59wdlv" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="post-iOS应用安全开发，你不知道的那些事" data-title="undefined" data-url="http://sunny-guangge.github.io/2016/01/04/iOS应用安全开发，你不知道的那些事/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"sunny-guangge"};
+(function() {
+var ds = document.createElement('script');
+ds.type = 'text/javascript';ds.async = true;
+ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+ds.charset = 'UTF-8';
+(document.getElementsByTagName('head')[0]
+|| document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+<!-- 多说公共JS代码 end -->
+  
     <article id="post-3DTouch" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/12/29/3DTouch/" class="article-date">
@@ -110,7 +183,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/29/3DTouch/" data-id="cin9xzctg00006mfy1nmzp3tb" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/29/3DTouch/" data-id="cinv5l67500008afy0wmt3idp" class="article-share-link">Share</a>
       
       
     </footer>
@@ -298,7 +371,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cin9xzcu400056mfysvsnoxdz" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cinv5l67s00058afy8rj1oq0l" class="article-share-link">Share</a>
       
       
     </footer>
@@ -357,7 +430,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="cin9xzcu000026mfyzb86fnac" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="cinv5l67n00028afyz3vgzb9e" class="article-share-link">Share</a>
       
       
     </footer>
@@ -420,7 +493,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="cin9xzctu00016mfymyfzk9xr" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="cinv5l67h00018afyzxcn5t0j" class="article-share-link">Share</a>
       
       
     </footer>
@@ -496,7 +569,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="cin9xzcun000d6mfyhbcpz0ob" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="cinv5l68a000e8afycj5nmdu5" class="article-share-link">Share</a>
       
       
     </footer>
@@ -556,7 +629,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="cin9xzcut000g6mfyyxqlrwpl" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="cinv5l68i000h8afy9d81dyjn" class="article-share-link">Share</a>
       
       
     </footer>
@@ -613,7 +686,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/" data-id="cin9xzcvc000k6mfy62t52399" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/" data-id="cinv5l693000l8afyi69k4oi0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -674,7 +747,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="cin9xzcur000f6mfytq9bgb6c" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="cinv5l68f000g8afyi3zrefk6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -739,7 +812,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="cin9xzcui000b6mfyxiumrgnm" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="cinv5l687000c8afyobqfdeth" class="article-share-link">Share</a>
       
       
     </footer>
@@ -764,144 +837,9 @@ ds.charset = 'UTF-8';
 </script>
 <!-- 多说公共JS代码 end -->
   
-    <article id="post-Markdown语法" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/11/10/Markdown语法/" class="article-date">
-  <time datetime="2015-11-10T10:37:42.000Z" itemprop="datePublished">2015-11-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/11/10/Markdown语法/">Markdown语法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我们理解您需要更便捷更高效的工具记录思想，整理笔记、知识，并将其中承载的价值传播给他人，<strong>Cmd Markdown</strong> 是我们给出的答案 —— 我们为记录思想和分享知识提供更专业的工具。 您可以使用 Cmd Markdown：</p>
-<blockquote>
-<ul>
-<li>整理知识，学习笔记</li>
-<li>发布日记，杂文，所见所想</li>
-<li>撰写发布技术文稿（代码支持）</li>
-<li>撰写发布学术论文（LaTeX 公式支持）</li>
-</ul>
-</blockquote>
-<p><img src="https://www.zybuluo.com/static/img/logo.png" alt="cmd-markdown-logo"></p>
-<p>除了您现在看到的这个 Cmd Markdown 在线版本，您还可以前往以下网址下载：</p>
-<h3 id="Windows/Mac/Linux_全平台客户端"><a href="https://www.zybuluo.com/cmd/" target="_blank" rel="external">Windows/Mac/Linux 全平台客户端</a></h3><blockquote>
-<p>请保留此份 Cmd Markdown 的欢迎稿兼使用说明，如需撰写新稿件，点击顶部工具栏右侧的 <i class="icon-file"></i> <strong>新文稿</strong> 或者使用快捷键 <code>Ctrl+Alt+N</code>。</p>
-</blockquote>
-<hr>
-<h2 id="什么是_Markdown">什么是 Markdown</h2><p>Markdown 是一种方便记忆、书写的纯文本标记语言，用户可以使用这些标记符号以最小的输入代价生成极富表现力的文档：譬如您正在阅读的这份文档。它使用简单的符号标记不同的标题，分割不同的段落，<strong>粗体</strong> 或者 <em>斜体</em> 某些文字，更棒的是，它还可以</p>
-<h3 id="1-_制作一份待办事宜_Todo_列表">1. 制作一份待办事宜 <a href="https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown#13-待办事宜-todo-列表" target="_blank" rel="external">Todo 列表</a></h3><ul>
-<li>[ ] 支持以 PDF 格式导出文稿</li>
-<li>[ ] 改进 Cmd 渲染算法，使用局部渲染技术提高渲染效率</li>
-<li>[x] 新增 Todo 列表功能</li>
-<li>[x] 修复 LaTex 公式渲染问题</li>
-<li>[x] 新增 LaTex 公式编号功能</li>
-</ul>
-<h3 id="2-_书写一个质能守恒公式[^LaTeX]">2. 书写一个质能守恒公式[^LaTeX]</h3><p>$$E=mc^2$$</p>
-<h3 id="3-_高亮一段代码[^code]">3. 高亮一段代码[^code]</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="decorator">@requires_authorization</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SomeClass</span>:</span></span><br><span class="line"><span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"><span class="comment"># A comment</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">'hello world'</span></span><br></pre></td></tr></table></figure>
-<h3 id="4-_高效绘制_流程图">4. 高效绘制 <a href="https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown#7-流程图" target="_blank" rel="external">流程图</a></h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">st=&#62;start: Start&#10;op=&#62;operation: Your Operation&#10;cond=&#62;condition: Yes or No?&#10;e=&#62;end&#10;&#10;st-&#62;op-&#62;cond&#10;cond(yes)-&#62;e&#10;cond(no)-&#62;op</span><br></pre></td></tr></table></figure>
-<h3 id="5-_高效绘制_序列图">5. 高效绘制 <a href="https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown#8-序列图" target="_blank" rel="external">序列图</a></h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Alice-&#62;Bob: Hello Bob, how are you?&#10;Note right of Bob: Bob thinks&#10;Bob--&#62;Alice: I am good thanks!</span><br></pre></td></tr></table></figure>
-<h3 id="6-_绘制表格">6. 绘制表格</h3><table>
-<thead>
-<tr>
-<th>项目</th>
-<th style="text-align:right">价格</th>
-<th style="text-align:center">数量</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>计算机</td>
-<td style="text-align:right">\$1600</td>
-<td style="text-align:center">5</td>
-</tr>
-<tr>
-<td>手机</td>
-<td style="text-align:right">\$12</td>
-<td style="text-align:center">12</td>
-</tr>
-<tr>
-<td>管线</td>
-<td style="text-align:right">\$1</td>
-<td style="text-align:center">234</td>
-</tr>
-</tbody>
-</table>
-<h3 id="7-_更详细语法说明">7. 更详细语法说明</h3><p>想要查看更详细的语法说明，可以参考我们准备的 <a href="https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown" target="_blank" rel="external">Cmd Markdown 简明语法手册</a>，进阶用户可以参考 <a href="https://www.zybuluo.com/mdeditor?url=https://www.zybuluo.com/static/editor/md-help.markdown#cmd-markdown-高阶语法手册" target="_blank" rel="external">Cmd Markdown 高阶语法手册</a> 了解更多高级功能。</p>
-<p>总而言之，不同于其它 <em>所见即所得</em> 的编辑器：你只需使用键盘专注于书写文本内容，就可以生成印刷级的排版格式，省却在键盘和工具栏之间来回切换，调整内容和格式的麻烦。<strong>Markdown 在流畅的书写和印刷级的阅读体验之间找到了平衡。</strong> 目前它已经成为世界上最大的技术分享网站 GitHub 和 技术问答网站 StackOverFlow 的御用书写格式。</p>
-<hr>
-<h2 id="什么是_Cmd_Markdown">什么是 Cmd Markdown</h2><p>您可以使用很多工具书写 Markdown，但是 Cmd Markdown 是这个星球上我们已知的、最好的 Markdown 工具——没有之一 ：）因为深信文字的力量，所以我们和你一样，对流畅书写，分享思想和知识，以及阅读体验有极致的追求，我们把对于这些诉求的回应整合在 Cmd Markdown，并且一次，两次，三次，乃至无数次地提升这个工具的体验，最终将它演化成一个 <strong>编辑/发布/阅读</strong> Markdown 的在线平台——您可以在任何地方，任何系统/设备上管理这里的文字。</p>
-<h3 id="1-_实时同步预览">1. 实时同步预览</h3><p>我们将 Cmd Markdown 的主界面一分为二，左边为<strong>编辑区</strong>，右边为<strong>预览区</strong>，在编辑区的操作会实时地渲染到预览区方便查看最终的版面效果，并且如果你在其中一个区拖动滚动条，我们有一个巧妙的算法把另一个区的滚动条同步到等价的位置，超酷！</p>
-<h3 id="2-_编辑工具栏">2. 编辑工具栏</h3><p>也许您还是一个 Markdown 语法的新手，在您完全熟悉它之前，我们在 <strong>编辑区</strong> 的顶部放置了一个如下图所示的工具栏，您可以使用鼠标在工具栏上调整格式，不过我们仍旧鼓励你使用键盘标记格式，提高书写的流畅度。</p>
-<p><img src="https://www.zybuluo.com/static/img/toolbar-editor.png" alt="tool-editor"></p>
-<h3 id="3-_编辑模式">3. 编辑模式</h3><p>完全心无旁骛的方式编辑文字：点击 <strong>编辑工具栏</strong> 最右测的拉伸按钮或者按下 <code>Ctrl + M</code>，将 Cmd Markdown 切换到独立的编辑模式，这是一个极度简洁的写作环境，所有可能会引起分心的元素都已经被挪除，超清爽！</p>
-<h3 id="4-_实时的云端文稿">4. 实时的云端文稿</h3><p>为了保障数据安全，Cmd Markdown 会将您每一次击键的内容保存至云端，同时在 <strong>编辑工具栏</strong> 的最右侧提示 <code>已保存</code> 的字样。无需担心浏览器崩溃，机器掉电或者地震，海啸——在编辑的过程中随时关闭浏览器或者机器，下一次回到 Cmd Markdown 的时候继续写作。</p>
-<h3 id="5-_离线模式">5. 离线模式</h3><p>在网络环境不稳定的情况下记录文字一样很安全！在您写作的时候，如果电脑突然失去网络连接，Cmd Markdown 会智能切换至离线模式，将您后续键入的文字保存在本地，直到网络恢复再将他们传送至云端，即使在网络恢复前关闭浏览器或者电脑，一样没有问题，等到下次开启 Cmd Markdown 的时候，她会提醒您将离线保存的文字传送至云端。简而言之，我们尽最大的努力保障您文字的安全。</p>
-<h3 id="6-_管理工具栏">6. 管理工具栏</h3><p>为了便于管理您的文稿，在 <strong>预览区</strong> 的顶部放置了如下所示的 <strong>管理工具栏</strong>：</p>
-<p><img src="https://www.zybuluo.com/static/img/toolbar-manager.jpg" alt="tool-manager"></p>
-<p>通过管理工具栏可以：</p>
-<p><i class="icon-share"></i> 发布：将当前的文稿生成固定链接，在网络上发布，分享<br><i class="icon-file"></i> 新建：开始撰写一篇新的文稿<br><i class="icon-trash"></i> 删除：删除当前的文稿<br><i class="icon-cloud"></i> 导出：将当前的文稿转化为 Markdown 文本或者 Html 格式，并导出到本地<br><i class="icon-reorder"></i> 列表：所有新增和过往的文稿都可以在这里查看、操作<br><i class="icon-pencil"></i> 模式：切换 普通/Vim/Emacs 编辑模式</p>
-<h3 id="7-_阅读工具栏">7. 阅读工具栏</h3><p><img src="https://www.zybuluo.com/static/img/toolbar-reader.jpg" alt="tool-manager"></p>
-<p>通过 <strong>预览区</strong> 右上角的 <strong>阅读工具栏</strong>，可以查看当前文稿的目录并增强阅读体验。</p>
-<p>工具栏上的五个图标依次为：</p>
-<p><i class="icon-list"></i> 目录：快速导航当前文稿的目录结构以跳转到感兴趣的段落<br><i class="icon-chevron-sign-left"></i> 视图：互换左边编辑区和右边预览区的位置<br><i class="icon-adjust"></i> 主题：内置了黑白两种模式的主题，试试 <strong>黑色主题</strong>，超炫！<br><i class="icon-desktop"></i> 阅读：心无旁骛的阅读模式提供超一流的阅读体验<br><i class="icon-fullscreen"></i> 全屏：简洁，简洁，再简洁，一个完全沉浸式的写作和阅读环境</p>
-<h3 id="8-_阅读模式">8. 阅读模式</h3><p>在 <strong>阅读工具栏</strong> 点击 <i class="icon-desktop"></i> 或者按下 <code>Ctrl+Alt+M</code> 随即进入独立的阅读模式界面，我们在版面渲染上的每一个细节：字体，字号，行间距，前背景色都倾注了大量的时间，努力提升阅读的体验和品质。</p>
-<h3 id="9-_标签、分类和搜索">9. 标签、分类和搜索</h3><p>在编辑区任意行首位置输入以下格式的文字可以标签当前文档：</p>
-<p>标签： 未分类</p>
-<p>标签以后的文稿在【文件列表】（Ctrl+Alt+F）里会按照标签分类，用户可以同时使用键盘或者鼠标浏览查看，或者在【文件列表】的搜索文本框内搜索标题关键字过滤文稿，如下图所示：</p>
-<p><img src="https://www.zybuluo.com/static/img/file-list.png" alt="file-list"></p>
-<h3 id="10-_文稿发布和分享">10. 文稿发布和分享</h3><p>在您使用 Cmd Markdown 记录，创作，整理，阅读文稿的同时，我们不仅希望它是一个有力的工具，更希望您的思想和知识通过这个平台，连同优质的阅读体验，将他们分享给有相同志趣的人，进而鼓励更多的人来到这里记录分享他们的思想和知识，尝试点击 <i class="icon-share"></i> (Ctrl+Alt+P) 发布这份文档给好友吧！</p>
-<hr>
-<p>再一次感谢您花费时间阅读这份欢迎稿，点击 <i class="icon-file"></i> (Ctrl+Alt+N) 开始撰写新的文稿吧！祝您在这里记录、阅读、分享愉快！</p>
-<p>作者 <a href="http://weibo.com/ghosert" target="_blank" rel="external">@ghosert</a><br>2015 年 06月 15日    </p>
-<p>[^LaTeX]: 支持 <strong>LaTeX</strong> 编辑显示支持，例如：$\sum_{i=1}^n a_i=0$， 访问 <a href="http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference" target="_blank" rel="external">MathJax</a> 参考更多使用方法。</p>
-<p>[^code]: 代码高亮功能支持包括 Java, Python, JavaScript 在内的，<strong>四十一</strong>种主流编程语言。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/10/Markdown语法/" data-id="cin9xzcuv000h6mfyt47hqgop" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Markdown/">Markdown</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- 多说评论框 start -->
-<div class="ds-thread" data-thread-key="post-Markdown语法" data-title="undefined" data-url="http://sunny-guangge.github.io/2015/11/10/Markdown语法/"></div>
-<!-- 多说评论框 end -->
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"sunny-guangge"};
-(function() {
-var ds = document.createElement('script');
-ds.type = 'text/javascript';ds.async = true;
-ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-ds.charset = 'UTF-8';
-(document.getElementsByTagName('head')[0]
-|| document.getElementsByTagName('body')[0]).appendChild(ds);
-})();
-</script>
-<!-- 多说公共JS代码 end -->
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 </section>
@@ -932,7 +870,7 @@ ds.charset = 'UTF-8';
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -942,6 +880,10 @@ ds.charset = 'UTF-8';
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/05/06/java/">java</a>
+          </li>
         
           <li>
             <a href="/2016/03/22/常用的宏/">常用的宏</a>
@@ -957,10 +899,6 @@ ds.charset = 'UTF-8';
         
           <li>
             <a href="/2016/02/29/html/">html</a>
-          </li>
-        
-          <li>
-            <a href="/2016/01/26/正则表达式/">正则表达式</a>
           </li>
         
       </ul>
