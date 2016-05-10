@@ -113,7 +113,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/04/iOS应用安全开发，你不知道的那些事/" data-id="cinvdrpoa000at3fybi2jme5z" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/04/iOS应用安全开发，你不知道的那些事/" data-id="cio11co03000amtfy34yyjg9h" class="article-share-link">Share</a>
       
       
     </footer>
@@ -183,7 +183,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/29/3DTouch/" data-id="cinvdrpnj0000t3fy5sxqs1rn" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/29/3DTouch/" data-id="cio11cnzc0000mtfy1lvvfzhn" class="article-share-link">Share</a>
       
       
     </footer>
@@ -367,11 +367,17 @@ ds.charset = 'UTF-8';
 <h1 id="————————">————————</h1><h1 id="tableViewCell某个cell完全显示">tableViewCell某个cell完全显示</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">-(void)scrollViewDidScroll:(UIScrollView *)sender</span><br><span class="line">&#123;</span><br><span class="line">    [self checkWhichVideoToEnable];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)checkWhichVideoToEnable</span><br><span class="line">&#123;</span><br><span class="line">    for(UITableViewCell *cell in [tableView1 visibleCells])</span><br><span class="line">    &#123;</span><br><span class="line">        if([cell isKindOfClass:[UITableViewCell class]])</span><br><span class="line">        &#123;</span><br><span class="line">            NSIndexPath *indexPath = [tableView1 indexPathForCell:cell];</span><br><span class="line">            CGRect cellRect = [tableView1 rectForRowAtIndexPath:indexPath];</span><br><span class="line">            UIView *superview = tableView1.superview;</span><br><span class="line">            CGRect convertedRect=[tableView1 convertRect:cellRect toView:superview];</span><br><span class="line">            CGRect intersect = CGRectIntersection(tableView1.frame, convertedRect);</span><br><span class="line">            float visibleHeight = CGRectGetHeight(intersect);</span><br><span class="line"></span><br><span class="line">            if(visibleHeight&gt;599) // only if 60% of the cell is visible</span><br><span class="line">            &#123;</span><br><span class="line">                // unmute the video if we can see at least half of the cell</span><br><span class="line">                [(UITableViewCell*)cell setBackgroundColor:[UIColor blackColor]];</span><br><span class="line">            &#125;</span><br><span class="line">            else</span><br><span class="line">            &#123;</span><br><span class="line">                // mute the other video cells that are not visible</span><br><span class="line">                [(UITableViewCell*)cell setBackgroundColor:[UIColor redColor]];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h1 id="制作静态库：">制作静态库：</h1><p>点击file-&gt;New-&gt;Project ,然后在iOS栏中选择：Framework &amp; Library中的 Cocoa Touch Static Library<br>输入任意名字，默认新建两个文件， 然后在真机下编译，再在模拟机下编译  会生成两个.a 文件  然后合并两个.a文件，<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -create /Users/wangshuaiguang/Library/Developer/Xcode/DerivedData/whatfuckyousay-bwecdvxpjwhcxoguplmudzyjrmkc/Build/Products/Debug-iphoneos/libwhatfuckyousay.a /Users/wangshuaiguang/Library/Developer/Xcode/DerivedData/whatfuckyousay-bwecdvxpjwhcxoguplmudzyjrmkc/Build/Products/Debug-iphonesimulator/libwhatfuckyousay.a -output /Users/wangshuaiguang/Desktop/libwhatfuckyousay.a</span><br></pre></td></tr></table></figure></p>
 <p>生成的.a文件就可以用了</p>
+<p>armv6、armv7、armv7s是arm CPU的指令集，一般是向下兼容的。如iPhone4sCPU支持armv7,但它会兼容armv6，只是使用armv6指令可能无法充分发挥它的特性。同理iPhone5是完全支持armv7的，所以不用担心armv7的库不能在iPhone5上跑，一般情况是不会出问题的。但需要提醒的是，苹果是自Xcode4.5之后，就放弃了对armv6的支持，换言之，就是Xcode4.5正常情况是不能编译armv6库的(当然据说通过特殊手段可以支持，之前在网有看到一些在神的帖子，感兴趣的可以搜搜)。还有一点提醒大家，就是可能Xcode4.5编译的包没有armv6，提交应用上传时，会提示要支持armv6，当时此问题把我纠结了好一阵。后来我将支持的最低版本发为iOS4.3就OK。</p>
+<p>armv6：iPhone 2G/3G，iPod 1G/2G</p>
+<p>armv7：iPhone 3GS/4/4s，iPod 3G/4G，iPad 1G/2G/3G</p>
+<p>armv7s：iPhone5, iPod5</p>
+<p>用指令查看.a文件支持的指令集：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -info .a文件的存储位置</span><br></pre></td></tr></table></figure></p>
+<p>没有适配armv7的情况在4s的时候会报错：所以需要在模拟器上编译出一个.a 版本  在5s之后的模拟器编译出一个版本  还有就是真机上的版本<br>然后把不同版本进行合并：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -create 多个.a文件的存储位置，中间用空格隔开 -output 要存储到的位置路径   回车就可以了</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cinvdrpo20005t3fybus4a5m2" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cio11cnzt0005mtfy849j35vp" class="article-share-link">Share</a>
       
       
     </footer>
@@ -430,7 +436,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="cinvdrpnx0002t3fyi2haif16" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="cio11cnzp0002mtfyfwvgzrqf" class="article-share-link">Share</a>
       
       
     </footer>
@@ -493,7 +499,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="cinvdrpnv0001t3fyqnz5fz7g" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="cio11cnzn0001mtfy5u07ktw1" class="article-share-link">Share</a>
       
       
     </footer>
@@ -569,7 +575,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="cinvdrpoh000et3fyv63fesi3" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="cio11co0i000emtfya7cppe4x" class="article-share-link">Share</a>
       
       
     </footer>
@@ -629,7 +635,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="cinvdrpon000ht3fy6u7p7e5u" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="cio11co0o000hmtfys8hsi0pq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -686,7 +692,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/" data-id="cinvdrpoz000lt3fyurr62o16" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/" data-id="cio11co1k000lmtfy1dk2hg11" class="article-share-link">Share</a>
       
       
     </footer>
@@ -747,7 +753,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="cinvdrpom000gt3fyiz5a1iki" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="cio11co0m000gmtfy5z25yn6q" class="article-share-link">Share</a>
       
       
     </footer>
@@ -812,7 +818,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="cinvdrpod000ct3fyfndxu3ie" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="cio11co0e000cmtfyanud9l15" class="article-share-link">Share</a>
       
       
     </footer>
