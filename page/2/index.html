@@ -113,7 +113,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2016/01/04/iOS应用安全开发，你不知道的那些事/" data-id="cio11co03000amtfy34yyjg9h" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2016/01/04/iOS应用安全开发，你不知道的那些事/" data-id="cipnue0dq000an4fydq2vqhql" class="article-share-link">Share</a>
       
       
     </footer>
@@ -183,7 +183,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/29/3DTouch/" data-id="cio11cnzc0000mtfy1lvvfzhn" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/29/3DTouch/" data-id="cipnue0cx0000n4fywctuy624" class="article-share-link">Share</a>
       
       
     </footer>
@@ -373,11 +373,12 @@ ds.charset = 'UTF-8';
 <p>armv7s：iPhone5, iPod5</p>
 <p>用指令查看.a文件支持的指令集：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -info .a文件的存储位置</span><br></pre></td></tr></table></figure></p>
 <p>没有适配armv7的情况在4s的时候会报错：所以需要在模拟器上编译出一个.a 版本  在5s之后的模拟器编译出一个版本  还有就是真机上的版本<br>然后把不同版本进行合并：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -create 多个.a文件的存储位置，中间用空格隔开 -output 要存储到的位置路径   回车就可以了</span><br></pre></td></tr></table></figure></p>
+<h1 id="导航栏右滑返回失效的处理">导航栏右滑返回失效的处理</h1><p>1.很多时候我们都会自定义系统的返回按钮，这样就可能导致右滑返回失效的问题，解决方式就是：让当前控制器成为导航栏右滑返回手势UIScreenEdgePanGestureRecognizer的代理<br>self.navigationController.interactivePopGestureRecognizer.delegate =self;<br>2.有的时候我们在系统右滑返回的时候要处理一些事情，譬如以下场景：当前控制器上正在进行编辑操作，当用户右滑返回的时候我们希望弹框提示用户是否要放弃编辑，这个时候我们也要拿到这个代理.第一步：在viewdidload的时候，id originalDelegate<br>=self.navigationController.interactivePopGestureRecognizer.delegate，你会发现它的原始代理就是UINavigationController本身；第二步：在viewwillappear的时候，让当前控制器成为导航栏右滑返回手势的代理<br>self.navigationController.interactivePopGestureRecognizer.delegate =self;第三步：实现<br>UIGestureRecognizerDelegate<br>的代理方法- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer，通过这个方法我们就可以阻断系统的返回去做一些处理。但切记在<br>viewWillDisappear<br>的时候将该代理恢复到原状<br>self.navigationController.interactivePopGestureRecognizer.delegate =originalDelegate;因为UINavigationController属于系统层级，否则进入其他界面右滑返回的时候都会走这个代理方法。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cio11cnzt0005mtfy849j35vp" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/17/学习笔记/" data-id="cipnue0dj0005n4fy0jimccu8" class="article-share-link">Share</a>
       
       
     </footer>
@@ -436,7 +437,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="cio11cnzp0002mtfyfwvgzrqf" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/15/沙盒机制/" data-id="cipnue0df0002n4fy5dqvf670" class="article-share-link">Share</a>
       
       
     </footer>
@@ -499,7 +500,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="cio11cnzn0001mtfy5u07ktw1" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/07/面试题/" data-id="cipnue0d90001n4fyqh82efmb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -575,7 +576,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="cio11co0i000emtfya7cppe4x" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/03/git学习总结/" data-id="cipnue0ee000en4fy1ef6dz78" class="article-share-link">Share</a>
       
       
     </footer>
@@ -635,7 +636,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="cio11co0o000hmtfys8hsi0pq" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/12/02/XMPP个人总结/" data-id="cipnue0ek000hn4fyuo7jpdsk" class="article-share-link">Share</a>
       
       
     </footer>
@@ -692,7 +693,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/" data-id="cio11co1k000lmtfy1dk2hg11" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/Core-Animation-总结/" data-id="cipnue0f5000ln4fyk5o5e6hc" class="article-share-link">Share</a>
       
       
     </footer>
@@ -753,7 +754,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="cio11co0m000gmtfy5z25yn6q" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/19/block/" data-id="cipnue0ei000gn4fyofwj76dy" class="article-share-link">Share</a>
       
       
     </footer>
@@ -818,7 +819,7 @@ ds.charset = 'UTF-8';
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="cio11co0e000cmtfyanud9l15" class="article-share-link">Share</a>
+      <a data-url="http://sunny-guangge.github.io/2015/11/11/hexo创建个人博客总结/" data-id="cipnue0ea000cn4fyf4ukqwti" class="article-share-link">Share</a>
       
       
     </footer>
